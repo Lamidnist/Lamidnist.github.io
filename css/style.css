@@ -215,13 +215,13 @@ img { max-width: 100%; }
   transition: all 0.3s;
 }
 .logo-nav {
-  padding: 6px 0 10px 0;
+  padding: 5px 0 10px 0;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   -ms-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
-  width: 10px;
+  width: 8px;
   display: block;
 }
 .opacity-nav {
