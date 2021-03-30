@@ -215,7 +215,7 @@ img { max-width: 100%; }
   transition: all 0.3s;
 }
 .logo-nav {
-  padding: 5px 0 10px 0;
+  margin: 3px;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   -ms-transition: all 0.3s;
