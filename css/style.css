@@ -99,8 +99,8 @@ img { max-width: 100%; }
   z-index: 999999;
 }
 #status {
-  width: 200px;
-  height: 200px;
+  width: 450px;
+  height: 450px;
   position: absolute;
   left: 50%;
   top: 50%;
