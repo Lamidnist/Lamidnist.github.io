@@ -32,7 +32,7 @@ a{text-decoration: none;}
   position: absolute;
   left: 50%;
   top: 50%;
-  background-image: url(..kalabs/images/loader.gif);
+  background-image: url(..images/loader.gif);
   background-repeat: no-repeat;
   background-position: center center;
   text-align: center;
