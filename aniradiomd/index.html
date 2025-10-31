@@ -29,68 +29,72 @@
         <a class="nav-link" href="#about">О нас</a>
         <a class="nav-link" href="#faq">FAQ</a>
       </nav>
-        <div class="air-btn" id="playBtn" style="cursor: pointer;">▶ Play</div>
-        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" style="accent-color:#d45fa7; width:40px; vertical-align:right">
+        <div class="air-btn" id="playBtn" style="cursor: pointer; display: inline-block; padding: 6px 12px; background: #d45fa7; color: white; border-radius: 6px; font-size: 14px; user-select: none;">▶ Play</div>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" style="accent-color:#d45fa7; width:40px; vertical-align:middle; margin-left:8px;">
         
-        <!-- Hidden YouTube player -->
+        <!-- Скрытый YouTube плеер -->
         <div id="ytplayer" style="width:1px;height:1px;overflow:hidden;"></div>
         
         <script src="https://www.youtube.com/iframe_api"></script>
         
         <script>
-        let YTplayer;
-        let isPlaying = false;
-        let ytReady = false;
+          let YTplayer;
+          let isPlaying = false;
+          let ytReady = false;
         
-        // YouTube API ready
-        function onYouTubeIframeAPIReady() {
-          YTplayer = new YT.Player('ytplayer', {
-            videoId: 'VXU3eEwt3Pc',
-            playerVars: {
-              autoplay: 0,
-              controls: 0,
-              iv_load_policy: 3,
-              modestbranding: 1,
-              playsinline: 1,
-              disablekb: 1
-            },
-            events: {
-              onReady: (event) => {
-                ytReady = true;
-                // Минимальное качество
-                event.target.setPlaybackQuality('small');
-                setTimeout(() => event.target.setPlaybackQuality('small'), 1000);
+          // Инициализация YouTube плеера
+          function onYouTubeIframeAPIReady() {
+            YTplayer = new YT.Player('ytplayer', {
+              videoId: 'VXU3eEwt3Pc', // Anime Radio MD - Прямой Эфир
+              playerVars: {
+                autoplay: 0,
+                controls: 0,
+                iv_load_policy: 3,
+                modestbranding: 1,
+                playsinline: 1,
+                disablekb: 1,
+                rel: 0,
+                fs: 0
+              },
+              events: {
+                onReady: (event) => {
+                  ytReady = true;
+                  event.target.setPlaybackQuality('small');
+                  setTimeout(() => event.target.setPlaybackQuality('small'), 1000);
+                  event.target.setVolume(100);
+                }
               }
-            }
-          });
-        }
-        
-        // Ждём загрузку DOM
-        document.addEventListener("DOMContentLoaded", () => {
-          const btn = document.getElementById("playBtn");
-          const vol = document.getElementById("volumeSlider");
-        
-          if(btn && vol){
-            btn.addEventListener("click", () => {
-              if (!ytReady) return;
-              if (!isPlaying) {
-                YTplayer.playVideo();
-                btn.textContent = "⏸ Pause";
-                isPlaying = true;
-              } else {
-                YTplayer.pauseVideo();
-                btn.textContent = "▶ Play";
-                isPlaying = false;
-              }
-            });
-        
-            vol.addEventListener("input", () => {
-              if (ytReady) YTplayer.setVolume(vol.value * 100);
             });
           }
-        });
+        
+          // Управление после загрузки DOM
+          document.addEventListener("DOMContentLoaded", () => {
+            const btn = document.getElementById("playBtn");
+            const vol = document.getElementById("volumeSlider");
+        
+            if (btn && vol) {
+              btn.addEventListener("click", () => {
+                if (!ytReady) return;
+        
+                if (!isPlaying) {
+                  YTplayer.playVideo();
+                  btn.textContent = "⏸ Pause";
+                  isPlaying = true;
+                } else {
+                  YTplayer.pauseVideo();
+                  btn.textContent = "▶ Play";
+                  isPlaying = false;
+                }
+              });
+        
+              vol.addEventListener("input", () => {
+                if (ytReady) {
+                  YTplayer.setVolume(vol.value * 100);
+                }
+              });
+            }
+          });
         </script>
-
 
 
 
