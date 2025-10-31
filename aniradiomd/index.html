@@ -29,7 +29,7 @@
         <a class="nav-link" href="#about">О нас</a>
         <a class="nav-link" href="#faq">FAQ</a>
       </nav>
-        <div class="air-btn" id="playBtn" style="cursor: pointer; display: inline-block; padding: 6px 12px; background: #d45fa7; color: white; border-radius: 6px; font-size: 14px; user-select: none;">Play</div>
+        <div class="air-btn" id="playBtn" style="cursor: pointer;">Play</div>
         <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" style="accent-color:#d45fa7; width:40px; vertical-align:middle; margin-left:8px;">
         
         <!-- Скрытый YouTube плеер -->
@@ -42,7 +42,6 @@
           let isPlaying = false;
           let ytReady = false;
         
-          // Инициализация плеера с принудительным стартом с LIVE
           function onYouTubeIframeAPIReady() {
             YTplayer = new YT.Player('ytplayer', {
               videoId: 'VXU3eEwt3Pc',
@@ -55,9 +54,7 @@
                 disablekb: 1,
                 rel: 0,
                 fs: 0,
-                enablejsapi: 1,
-                // КЛЮЧЕВОЙ ПАРАМЕТР: старт с конца (LIVE)
-                startSeconds: 999999999  // "Хак" — заставляет начать с конца (live tail)
+                enablejsapi: 1
               },
               events: {
                 onReady: (event) => {
@@ -65,35 +62,22 @@
                   event.target.setPlaybackQuality('small');
                   setTimeout(() => event.target.setPlaybackQuality('small'), 1000);
                   event.target.setVolume(100);
-                },
-                onStateChange: (event) => {
-                  // При старте — принудительно переходим в LIVE
-                  if (event.data === YT.PlayerState.PLAYING && !isPlaying) {
-                    event.target.seekTo(999999999, true); // Переход в конец
-                  }
                 }
               }
             });
           }
         
-          // DOM готов
           document.addEventListener("DOMContentLoaded", () => {
             const btn = document.getElementById("playBtn");
             const vol = document.getElementById("volumeSlider");
         
             if (btn && vol) {
               btn.addEventListener("click", () => {
-                if (!ytReady) {
-                  alert('Плеер загружается... Подожди 2 секунды.');
-                  return;
-                }
+                if (!ytReady) return;
         
                 if (!isPlaying) {
-                  // Принудительно в LIVE
-                  YTplayer.loadVideoById({
-                    videoId: 'VXU3eEwt3Pc',
-                    startSeconds: 999999999  // Старт с конца
-                  });
+                  // Просто play — YouTube сам стартует с LIVE для прямого эфира
+                  YTplayer.playVideo();
                   btn.textContent = "Pause";
                   isPlaying = true;
                 } else {
