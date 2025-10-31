@@ -29,63 +29,54 @@
         <a class="nav-link" href="#about">О нас</a>
         <a class="nav-link" href="#faq">FAQ</a>
       </nav>
-        <div class="air-btn" id="playBtn" style="cursor: pointer;">▶ Play</div>
-        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" style="accent-color:#d45fa7; width:40px; vertical-align:right">
+        <div class="air-btn" id="playBtn">▶ Play</div>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
         
         <div id="ytplayer" style="width:1px;height:1px;overflow:hidden;"></div>
-        
         <script src="https://www.youtube.com/iframe_api"></script>
         
         <script>
         let YTplayer;
         let isPlaying = false;
         
-        function createPlayer() {
-          if (YTplayer) {
-            // удаляем старый плеер
-            YTplayer.destroy();
-          }
-          
+        function onYouTubeIframeAPIReady() {
           YTplayer = new YT.Player('ytplayer', {
             videoId: 'VXU3eEwt3Pc',
-            playerVars: {
-              autoplay: 1,
-              controls: 0,
-              iv_load_policy: 3,
-              modestbranding: 1,
-              playsinline: 1,
-              disablekb: 1
-            },
+            playerVars: { autoplay: 0, controls: 0, modestbranding: 1, playsinline: 1 },
             events: {
-              'onReady': (event) => {
-                event.target.setPlaybackQuality('small');
-                event.target.playVideo();
+              onReady: (e) => {
+                e.target.setPlaybackQuality('small');
               }
             }
           });
         }
         
-        const btn = document.getElementById("playBtn");
-        const vol = document.getElementById("volumeSlider");
+        document.addEventListener("DOMContentLoaded", () => {
+          const btn = document.getElementById("playBtn");
+          const vol = document.getElementById("volumeSlider");
         
-        btn.addEventListener("click", () => {
-          if (!isPlaying) {
-            createPlayer(); // всегда создаём новый плеер → эфир "живой"
-            btn.textContent = "⏸ Pause";
-            isPlaying = true;
-          } else {
-            if (YTplayer) YTplayer.stopVideo(); // останавливаем текущий
-            btn.textContent = "▶ Play";
-            isPlaying = false;
-          }
-        });
+          btn.addEventListener("click", () => {
+            if (!YTplayer) return; // если ещё не готов плеер
+            if (!isPlaying) {
+              YTplayer.seekTo(YTplayer.getDuration()); // переход к лайву
+              YTplayer.playVideo();
+              btn.textContent = "⏸ Pause";
+              isPlaying = true;
+            } else {
+              YTplayer.stopVideo(); // останавливаем
+              btn.textContent = "▶ Play";
+              isPlaying = false;
+            }
+          });
         
-        vol.addEventListener("input", () => {
-          if (YTplayer && YTplayer.setVolume) {
-            YTplayer.setVolume(vol.value * 100);
-          }
+          vol.addEventListener("input", () => {
+            if (YTplayer && YTplayer.setVolume) {
+              YTplayer.setVolume(vol.value * 100);
+            }
+          });
         });
         </script>
+
 
 
       </div>
