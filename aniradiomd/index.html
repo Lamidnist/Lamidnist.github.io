@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Аниме Радио Молдова — милое онлайн радио</title>
+<meta name="description" content="Аниме Радио Молдова — ламповое онлайн радио с милотой, сакурой и любимыми треками. Слушай эфир, знакомься с ведущими и заказывай музыку!" />
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <canvas id="sakura" aria-hidden="true"></canvas>
+  <header class="header">
+    <div class="bar">
+      <a class="logo" href="#top" aria-label="Аниме Радио Молдова">
+        <div class="logo-badge" aria-hidden="true"></div>
+        <div>
+          <div class="brand-title">Аниме Радио Молдова</div>
+          <div class="brand-sub">милота, ламповость и любимые опенинги</div>
+        </div>
+      </a>
+
+      <nav>
+        <a class="nav-link" href="#efir">Эфир</a>
+        <a class="nav-link" href="#playlist">Плейлист</a>
+        <a class="nav-link" href="#hosts">Ведущие</a>
+        <a class="nav-link" href="#schedule">Расписание</a>
+        <a class="nav-link" href="#socials">Соцсети</a>
+        <a class="nav-link" href="#requests">Заявка</a>
+        <a class="nav-link" href="#about">О нас</a>
+        <a class="nav-link" href="#faq">FAQ</a>
+      </nav>
+        <div class="air-btn" id="playBtn" style="cursor: pointer;">▶ Play</div>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" style="accent-color:#d45fa7; width:40px; vertical-align:right;">
+      </div>
+  </header>
+
+  <main id="top" class="hero">
+    <section class="hero-card reveal">
+      <div class="kicker">ламповое аниме-радио</div>
+      <h1 class="title">Нежные треки, теплые эфиры и лепестки сакуры</h1>
+      <p class="subtitle">Включай поток, заказывай любимые опенинги и знакомься с нашими ведущими. Здесь мягко, уютно и очень по-аниме.</p>
+      <div class="pill-row">
+        <span class="pill">без рекламы</span>
+        <span class="pill">сакура-дождь</span>
+        <span class="pill">милые анимации</span>
+        <span class="pill">24/7 эфир</span>
+      </div>      
+    </section>
+
+
+    <section class="hero-card reveal" aria-label="Приветствие">
+        <div class="wrap">
+            <div class="hero-art float">
+            <div class="kawaii">
+                <div class="kawaii-face">(＾▽＾)</div>
+                <div class="kawaii-note">♪</div>
+                <div class="kawaii-note">♬</div>
+            </div>
+            <p style="margin:10px 0 0; color:#6d5c74">Тёплый звук, уютная атмосфера и нежные лепестки сакуры — всё как мы любим.</p>
+            </div>
+        </div>
+    </section>
+    
+
+  </main>
+
+  <div class="cloud-divider" aria-hidden="true">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 C120,90 240,90 360,60 C480,30 600,30 720,60 C840,90 960,90 1080,60 L1200,30 L1200,120 L0,120 Z"
+            fill="url(#grad)"></path>
+      <defs>
+        <linearGradient id="grad" x1="0" x2="1">
+          <stop offset="0%" stop-color="#ffe6f3"/>
+          <stop offset="100%" stop-color="#e9f3ff"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+
+    <audio id="radio" 
+        src="https://uk20freenew.listen2myradio.com/live.mp3?typeportmount=s1_16344_stream_466768313">
+    </audio>
+
+    <script>
+    const radio = document.getElementById("radio");
+    const btn = document.getElementById("playBtn");
+    const vol = document.getElementById("volumeSlider");
+    let isPlaying = false;
+
+    btn.addEventListener("click", () => {
+        if (!isPlaying) {
+        radio.play();
+        btn.textContent = "⏸ Pause";
+        isPlaying = true;
+        } else {
+        radio.pause();
+        btn.textContent = "▶ Play";
+        isPlaying = false;
+        }
+    });
+    vol.addEventListener("input", () => {
+          radio.volume = vol.value;
+        });
+        // Сброс кнопки при завершении
+        radio.addEventListener('pause',()=>{ btn.textContent = "▶ Play"; isPlaying = false; });
+        radio.addEventListener('ended',()=>{ btn.textContent = "▶ Play"; isPlaying = false; });
+    
+    </script>
+    
+
+
+  <section id="hosts" class="section reveal">
+    <h2>Наши ведущие</h2>
+    <div class="grid">
+      <div class="card host">
+        <div class="avatar" aria-hidden="true"></div>
+        <div>
+          <div class="name">КУЛЬТОВЫЙ АНИМЕШНИК — Ламиднист <span class="badge cult">легенда эфира</span></div>
+          <div class="role">голос теплых ночей • подборка «Сакура-лофи»</div>
+          <div class="tag">любит soft blue + warm tones, облачные вайбы</div>
+        </div>
+      </div>
+      <div class="card host">
+        <div class="avatar" aria-hidden="true"></div>
+        <div>
+          <div class="name">Сакурако</div>
+          <div class="role">утренние опенинги • «Петальки Добра»</div>
+          <div class="tag">обожает ретро-аниме и уютные болталки</div>
+        </div>
+      </div>
+      <div class="card host">
+        <div class="avatar" aria-hidden="true"></div>
+        <div>
+          <div class="name">Кума-сан</div>
+          <div class="role">ночные лофай-сеты • «Медвежий Чилл»</div>
+          <div class="tag">приглушённый свет, теплые синты, мягкая перкуссия</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule" class="section reveal">
+    <h2>Расписание</h2>
+    <div class="schedule">
+      <div class="slot">
+        <div class="time">Утро • 08:00–11:00</div>
+        <div class="prog">«Петальки Добра» с Сакурако</div>
+        <div class="tag">энергичные OP/ED, добрые новости, пожелания</div>
+      </div>
+      <div class="slot">
+        <div class="time">День • 13:00–16:00</div>
+        <div class="prog">«Аниме-микс»</div>
+        <div class="tag">фреш-релизы, классика, каверы</div>
+      </div>
+      <div class="slot">
+        <div class="time">Вечер • 19:00–22:00</div>
+        <div class="prog">«Сакура-лофи» с Ламиднистом</div>
+        <div class="tag">лофи, джаз-хоп, теплый ламповый вайб</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="socials" class="section reveal">
+    <h2>Соцсети</h2>
+    <div class="socials">
+      <a class="social" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9.6 15.6l-.2 3c.3 0 .5-.1.7-.3l1.8-1.7 3.7 2.7c.7.4 1.2.2 1.4-.7l2.5-11.7c.2-.8-.3-1.2-1-.9L3.9 10c-.8.3-.8.7-.1.9l3.9 1.2 9.1-5.6c.4-.3.8-.1.5.2" stroke="#4ea4ff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Telegram
+      </a>
+      <a class="social" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M22 12s0-3.4-.4-4.9c-.2-.9-.9-1.6-1.8-1.8C17.3 4.8 12 4.8 12 4.8s-5.3 0-7.8.5c-.9.2-1.6.9-1.8 1.8C2 8.6 2 12 2 12s0 3.4.4 4.9c.2.9.9 1.6 1.8 1.8 2.5.5 7.8.5 7.8.5s5.3 0 7.8-.5c.9-.2 1.6-.9 1.8-1.8.4-1.5.4-4.9.4-4.9z" stroke="#ff6b6b" stroke-width="1.3"/><path d="M10 9.8l4.8 2.2L10 14.2V9.8z" fill="#ff6b6b"/></svg>
+        YouTube
+      </a>
+      <a class="social" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#ff79c6" stroke-width="1.3"/><circle cx="12" cy="12" r="4" stroke="#ff79c6" stroke-width="1.3"/><circle cx="17.5" cy="6.5" r="1" fill="#ff79c6"/></svg>
+        Instagram
+      </a>
+      <a class="social" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 7h3l2.2 4 .8-1.5C10.7 7.8 11.7 7 13 7h2v3h-1c-.7 0-1.1.3-1.4.8L11.8 13l2.6 4H18l-2.2-3.2C18.2 13.5 20 11 21 7h-3c-1 2.6-2.3 4.6-3.6 5.6" stroke="#5b8cff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        VK
+      </a>
+    </div>
+    <div style="height:8px"></div>
+    <div class="tag">Добавьте реальные ссылки на ваши соцсети.</div>
+  </section>
+
+  <section id="requests" class="section reveal">
+    <h2>Заявка на трек</h2>
+    <div class="grid">
+      <div class="card" style="grid-column: span 7">
+        <form class="form" onsubmit="requestTrack(event)">
+          <input class="input" type="text" id="rq-name" placeholder="Ваше имя" required />
+          <input class="input" type="text" id="rq-track" placeholder="Трек и исполнитель" required />
+          <textarea class="textarea" id="rq-note" placeholder="Пожелание или поздравление (необязательно)"></textarea>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <button class="mini" type="submit">Отправить в эфир (через почту)</button>
+            <button class="mini" type="button" onclick="clearRequest()">Очистить</button>
+          </div>
+          <div class="tag">Отправка откроет почтовый клиент (mailto). Вы можете заменить адрес на ваш.</div>
+        </form>
+      </div>
+      <aside class="card" style="grid-column: span 5">
+        <div class="badge">Подсказка</div>
+        <div style="height:8px"></div>
+        <div class="tag">Мы бережно выбираем треки, чтобы сохранить мягкую атмосферу: лофай, джаз-хоп, OP/ED, инструменталы.</div>
+        <div style="height:6px"></div>
+        <div class="tag">Если трек не прозвучал сразу — он в очереди на ближайший подходящий слот.</div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="about" class="section reveal">
+    <h2>О нас</h2>
+    <div class="grid">
+      <div class="card" style="grid-column: span 6">
+        <div class="badge">Атмосфера</div>
+        <div style="height:8px"></div>
+        <p>Мы — «Аниме Радио Молдова»: уютное онлайн-радио про эмоции, тепло и вдохновение. Здесь звучат любимые аниме-темы и мягкие подборки, которые помогают сосредоточиться, мечтать и отдыхать.</p>
+        <p class="tag">Цветовая палитра — мягкие голубые и теплые розовые тона, как небо и сакура.</p>
+      </div>
+      <div class="card" style="grid-column: span 6">
+        <div class="badge">Философия</div>
+        <div style="height:8px"></div>
+        <p>Мы верим в ламповость: никаких резких переходов, никакой спешки. Только бережный саунд, лёгкие беседы и внимание к деталям — от плавных анимаций до дружелюбного общения.</p>
+        <p class="tag">Если стало чуть теплее — значит, всё получилось.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts" class="section reveal">
+    <h2>Контакты</h2>
+    <div class="grid">
+      <div class="card" style="grid-column: span 5">
+        <div class="badge">Почта</div>
+        <div style="height:8px"></div>
+        <p><strong>hello@anime-radio.md</strong></p>
+        <p class="tag">Напишите нам по рекламе, сотрудничеству и предложениям.</p>
+      </div>
+      <div class="card" style="grid-column: span 7">
+        <div class="badge">Адрес сердца</div>
+        <div style="height:8px"></div>
+        <p>Молдова, онлайн-вещание 24/7</p>
+        <p class="tag">Мы там, где играет ваша музыка.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="section reveal">
+    <h2>FAQ</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="badge">Плеер не играет?</div>
+        <div style="height:8px"></div>
+        <p>Нажмите «Play» в плеере или «Открыть поток» — некоторые браузеры блокируют автозапуск звука.</p>
+      </div>
+      <div class="card">
+        <div class="badge">Где плейлист эфира?</div>
+        <div style="height:8px"></div>
+        <p>Мы публикуем треки в соцсетях после эфиров. В ленте есть подборки дня и недели.</p>
+      </div>
+      <div class="card">
+        <div class="badge">Можно прислать свой трек?</div>
+        <div style="height:8px"></div>
+        <p>Да, отправьте ссылку и описание на почту. Мы слушаем всё и отвечаем.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    © 2025 Аниме Радио Молдова • Сделано с теплотой и лепестками сакуры ✿ • Все права защищены.
+  </footer>
+
+  <div class="toggle-wrap">
+    <label title="Ночной режим">
+      <input class="toggle" id="nightToggle" type="checkbox" />
+    </label>
+  </div>
+
+<script>
+  // Плавное появление секций
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); obs.unobserve(e.target);} });
+  },{ threshold:.1 });
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Очередь плейлиста (локально)
+  const queueEl = document.getElementById('queue');
+  const queue = [];
+  function renderQueue(){
+    queueEl.innerHTML = queue.map((t,i)=>`<li><strong>${i+1}.</strong> ${t}</li>`).join('');
+  }
+  document.querySelectorAll('[data-queue]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      queue.push(btn.getAttribute('data-queue'));
+      renderQueue();
+    });
+  });
+  document.getElementById('clearQueue').addEventListener('click',()=>{ queue.length=0; renderQueue(); });
+
+  // Лайки (локально, милый клип)
+  document.querySelectorAll('[data-like]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      btn.textContent = '❤ Спасибо!';
+      btn.disabled = true;
+      btn.style.opacity = .8;
+      setTimeout(()=>{ btn.textContent = '❤ Нравится'; btn.disabled=false; btn.style.opacity=1; }, 1800);
+    });
+  });
+
+  // Ночной режим
+  const night = document.getElementById('nightToggle');
+  night.addEventListener('change',()=>{
+    document.documentElement.classList.toggle('night', night.checked);
+    // Сохраняем состояние в localStorage, чтобы оно не сбрасывалось при перезагрузке
+    localStorage.setItem('nightMode', night.checked);
+  });
+  // При загрузке страницы проверяем состояние в localStorage
+  if (localStorage.getItem('nightMode') === 'true') {
+    night.checked = true;
+    document.documentElement.classList.add('night');
+  }
+
+  // Плеер: простое состояние
+  const player = document.getElementById('player');
+  const np = document.getElementById('np');
+  player.addEventListener('play', ()=> np.innerHTML = 'Сейчас в эфире: <strong>идёт поток…</strong>');
+  player.addEventListener('pause', ()=> np.innerHTML = 'Сейчас в эфире: <strong>пауза</strong>');
+  player.addEventListener('error', ()=> np.innerHTML = 'Сейчас в эфире: <strong>ошибка загрузки</strong> — попробуйте «Открыть поток».');
+
+  // Заявка трека через mailto
+  function requestTrack(e){
+    e.preventDefault();
+    const name = document.getElementById('rq-name').value.trim();
+    const track = document.getElementById('rq-track').value.trim();
+    const note = document.getElementById('rq-note').value.trim();
+    const to = 'hello@anime-radio.md'; // замените на ваш адрес
+    const subject = encodeURIComponent(`Заявка трека от ${name}`);
+    const body = encodeURIComponent(`Трек: ${track}\nПожелание: ${note || '—'}`);
+    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+  }
+  function clearRequest(){
+    document.getElementById('rq-name').value='';
+    document.getElementById('rq-track').value='';
+    document.getElementById('rq-note').value='';
+  }
+
+  // Сакура: лёгкая Canvas-анимация
+  (function(){
+    const c = document.getElementById('sakura');
+    const ctx = c.getContext('2d');
+    let W, H;
+
+    function resizeCanvas() {
+        W = c.width = window.innerWidth;
+        H = c.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const petals = [];
+    const PETALS = Math.min(48, Math.max(28, Math.floor(W/40)));
+
+    function rand(a,b){ return a + Math.random()*(b-a); }
+
+    function makePetal(){
+      const size = rand(8,16);
+      return {
+        x: rand(-W*0.2, W*1.2),
+        y: rand(-H, -40),
+        s: size,
+        vy: rand(0.4, 1.1),
+        vx: rand(-0.4, 0.4),
+        rot: rand(0, Math.PI*2),
+        vr: rand(-0.01, 0.015),
+        swayA: rand(10, 28),
+        swayW: rand(0.003, 0.007)
+      };
+    }
+
+    for(let i=0;i<PETALS;i++) petals.push(makePetal());
+
+    function petalPath(p){
+      const s = p.s;
+      ctx.beginPath();
+      // Сердцевидная лепестковая форма
+      ctx.moveTo(0, -s*0.2);
+      ctx.bezierCurveTo(s*0.8, -s*0.8, s*0.8, s*0.6, 0, s);
+      ctx.bezierCurveTo(-s*0.8, s*0.6, -s*0.8, -s*0.8, 0, -s*0.2);
+      ctx.closePath();
+    }
+
+    let t = 0;
+    let running = true;
+
+    function draw(){
+      if(!running) return;
+      t += 1;
+      ctx.clearRect(0,0,W,H);
+
+      petals.forEach(p=>{
+        p.y += p.vy;
+        p.x += p.vx + Math.sin(t*p.swayW)*p.swayA;
+        p.rot += p.vr;
+
+        // перерождение
+        if(p.y > H+30 || p.x < -60 || p.x > W+60){
+          Object.assign(p, makePetal(), { y: -30, x: rand(-W*0.1, W*1.1) });
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        
+        ctx.fillStyle = document.documentElement.classList.contains('night') ? '#f3a9cc' : '#ffc0e1';
+        ctx.globalAlpha = 0.8;
+        
+        petalPath(p);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  })();
+</script>
+</body>
+</html>
