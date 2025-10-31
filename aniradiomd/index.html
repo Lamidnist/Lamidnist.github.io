@@ -40,10 +40,11 @@
         <script>
         let YTplayer;
         let isPlaying = false;
+        let ytReady = false; // ✅ Флаг готовности плеера
         
         function onYouTubeIframeAPIReady() {
           YTplayer = new YT.Player('ytplayer', {
-            videoId: 'pnqmZD9-9jM', // YouTube ID
+            videoId: 'VXU3eEwt3Pc',
             playerVars: {
               autoplay: 0,
               controls: 0,
@@ -53,43 +54,41 @@
               disablekb: 1
             },
             events: {
-              'onReady': (event) => {
-                // Установим минимальное качество
+              onReady: (event) => {
+                ytReady = true; // ✅ плеер готов
                 event.target.setPlaybackQuality('small');
-                // Повторим через секунду, чтобы гарантировать
                 setTimeout(() => event.target.setPlaybackQuality('small'), 1000);
-              },
-              'onStateChange': (event) => {
-                // Если YouTube лагнул, можно добавить fallback
-                if(event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.UNSTARTED){
-                  console.log('Stream ended or not started — можно переключить на резерв');
-                }
               }
             }
           });
         }
         
-        const btn = document.getElementById("playBtn");
-        const vol = document.getElementById("volumeSlider");
+        // ✅ Ждём DOM
+        document.addEventListener("DOMContentLoaded", () => {
+          const btn = document.getElementById("playBtn");
+          const vol = document.getElementById("volumeSlider");
         
-        btn.addEventListener("click", () => {
-          if (!isPlaying) {
-            YTplayer.playVideo();
-            btn.textContent = "⏸ Pause";
-            isPlaying = true;
-          } else {
-            YTplayer.pauseVideo();
-            btn.textContent = "▶ Play";
-            isPlaying = false;
-          }
-        });
+          btn.addEventListener("click", () => {
+            if (!ytReady) return; // 🛑 если YouTube еще загружается
         
-        vol.addEventListener("input", () => {
-          if (YTplayer && YTplayer.setVolume) {
-            YTplayer.setVolume(vol.value * 100);
-          }
+            if (!isPlaying) {
+              YTplayer.playVideo();
+              btn.textContent = "⏸ Pause";
+              isPlaying = true;
+            } else {
+              // ✅ Вместо pause — возвращаем к прямому эфиру
+              YTplayer.stopVideo();
+              btn.textContent = "▶ Play";
+              isPlaying = false;
+            }
+          });
+        
+          vol.addEventListener("input", () => {
+            if (ytReady) YTplayer.setVolume(vol.value * 100);
+          });
         });
         </script>
+
 
 
 
