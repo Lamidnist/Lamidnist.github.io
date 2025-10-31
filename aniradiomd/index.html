@@ -30,7 +30,43 @@
         <a class="nav-link" href="#faq">FAQ</a>
       </nav>
         <div class="air-btn" id="playBtn" style="cursor: pointer;">▶ Play</div>
-        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" style="accent-color:#d45fa7; width:40px; vertical-align:right;">
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" style="accent-color:#d45fa7; width:40px; vertical-align:right">
+        
+        <!-- Скрытый YouTube плеер -->
+        <div id="ytplayer" style="width:0;height:0;overflow:hidden;"></div>
+        
+        <script src="https://www.youtube.com/iframe_api"></script>
+        
+        <script>
+        let player;
+        let isPlaying = false;
+        
+        function onYouTubeIframeAPIReady() {
+          player = new YT.Player('ytplayer', {
+            videoId: 'VXU3eEwt3Pc', // <-- твой YouTube ID
+            playerVars: { 'autoplay': 0, 'controls': 0 }
+          });
+        }
+        
+        const btn = document.getElementById("playBtn");
+        const vol = document.getElementById("volumeSlider");
+        
+        btn.addEventListener("click", () => {
+          if (!isPlaying) {
+            player.playVideo();
+            btn.textContent = "⏸ Pause";
+            isPlaying = true;
+          } else {
+            player.pauseVideo();
+            btn.textContent = "▶ Play";
+            isPlaying = false;
+          }
+        });
+        
+        vol.addEventListener("input", () => {
+          player.setVolume(vol.value * 100);
+        });
+        </script>
       </div>
   </header>
 
@@ -77,37 +113,6 @@
     </svg>
   </div>
 
-
-    <audio id="radio" 
-        src="https://uk20freenew.listen2myradio.com/live.mp3?typeportmount=s1_16344_stream_466768313">
-    </audio>
-
-    <script>
-    const radio = document.getElementById("radio");
-    const btn = document.getElementById("playBtn");
-    const vol = document.getElementById("volumeSlider");
-    let isPlaying = false;
-
-    btn.addEventListener("click", () => {
-        if (!isPlaying) {
-        radio.play();
-        btn.textContent = "⏸ Pause";
-        isPlaying = true;
-        } else {
-        radio.pause();
-        btn.textContent = "▶ Play";
-        isPlaying = false;
-        }
-    });
-    vol.addEventListener("input", () => {
-          radio.volume = vol.value;
-        });
-        // Сброс кнопки при завершении
-        radio.addEventListener('pause',()=>{ btn.textContent = "▶ Play"; isPlaying = false; });
-        radio.addEventListener('ended',()=>{ btn.textContent = "▶ Play"; isPlaying = false; });
-    
-    </script>
-    
 
 
   <section id="hosts" class="section reveal">
