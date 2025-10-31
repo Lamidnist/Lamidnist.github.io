@@ -38,11 +38,11 @@
         <script src="https://www.youtube.com/iframe_api"></script>
         
         <script>
-        let player;
+        let YTplayer;
         let isPlaying = false;
         
         function onYouTubeIframeAPIReady() {
-          player = new YT.Player('ytplayer', {
+          player = new YT.YTplayer('ytplayer', {
             videoId: 'VXU3eEwt3Pc', // <-- твой YouTube ID
             playerVars: { 'autoplay': 0, 'controls': 0 }
           });
@@ -53,18 +53,18 @@
         
         btn.addEventListener("click", () => {
           if (!isPlaying) {
-            player.playVideo();
+            YTplayer.playVideo();
             btn.textContent = "⏸ Pause";
             isPlaying = true;
           } else {
-            player.pauseVideo();
+            YTplayer.pauseVideo();
             btn.textContent = "▶ Play";
             isPlaying = false;
           }
         });
         
         vol.addEventListener("input", () => {
-          player.setVolume(vol.value * 100);
+          YTplayer.setVolume(vol.value * 100);
         });
         </script>
       </div>
