@@ -40,8 +40,9 @@
         <script>
         let YTplayer;
         let isPlaying = false;
-        let ytReady = false; // ✅ Флаг готовности плеера
+        let ytReady = false;
         
+        // YouTube API ready
         function onYouTubeIframeAPIReady() {
           YTplayer = new YT.Player('ytplayer', {
             videoId: 'VXU3eEwt3Pc',
@@ -55,7 +56,8 @@
             },
             events: {
               onReady: (event) => {
-                ytReady = true; // ✅ плеер готов
+                ytReady = true;
+                // Минимальное качество
                 event.target.setPlaybackQuality('small');
                 setTimeout(() => event.target.setPlaybackQuality('small'), 1000);
               }
@@ -63,31 +65,32 @@
           });
         }
         
-        // ✅ Ждём DOM
+        // Ждём загрузку DOM
         document.addEventListener("DOMContentLoaded", () => {
           const btn = document.getElementById("playBtn");
           const vol = document.getElementById("volumeSlider");
         
-          btn.addEventListener("click", () => {
-            if (!ytReady) return; // 🛑 если YouTube еще загружается
+          if(btn && vol){
+            btn.addEventListener("click", () => {
+              if (!ytReady) return;
+              if (!isPlaying) {
+                YTplayer.playVideo();
+                btn.textContent = "⏸ Pause";
+                isPlaying = true;
+              } else {
+                YTplayer.pauseVideo();
+                btn.textContent = "▶ Play";
+                isPlaying = false;
+              }
+            });
         
-            if (!isPlaying) {
-              YTplayer.playVideo();
-              btn.textContent = "⏸ Pause";
-              isPlaying = true;
-            } else {
-              // ✅ Вместо pause — возвращаем к прямому эфиру
-              YTplayer.stopVideo();
-              btn.textContent = "▶ Play";
-              isPlaying = false;
-            }
-          });
-        
-          vol.addEventListener("input", () => {
-            if (ytReady) YTplayer.setVolume(vol.value * 100);
-          });
+            vol.addEventListener("input", () => {
+              if (ytReady) YTplayer.setVolume(vol.value * 100);
+            });
+          }
         });
         </script>
+
 
 
 
