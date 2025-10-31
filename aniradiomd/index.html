@@ -42,7 +42,19 @@
           let isPlaying = false;
           let ytReady = false;
         
-          // Инициализация YouTube плеера
+          // Функция для проверки готовности API (фикс кэша/куки)
+          function checkYTReady() {
+            if (window.YT && YT && YT.Player && !ytReady) {
+              ytReady = true;
+              console.log('YouTube API готов'); // Для дебага, удали если не нужно
+            }
+          }
+        
+          // Интервал для проверки (каждые 100мс, до 10 сек)
+          const readyCheck = setInterval(checkYTReady, 100);
+          setTimeout(() => clearInterval(readyCheck), 10000);
+        
+          // Инициализация плеера
           function onYouTubeIframeAPIReady() {
             YTplayer = new YT.Player('ytplayer', {
               videoId: 'VXU3eEwt3Pc', // Anime Radio MD - Прямой Эфир
@@ -54,7 +66,8 @@
                 playsinline: 1,
                 disablekb: 1,
                 rel: 0,
-                fs: 0
+                fs: 0,
+                enablejsapi: 1  // Включаем JS API для seekTo
               },
               events: {
                 onReady: (event) => {
@@ -62,21 +75,30 @@
                   event.target.setPlaybackQuality('small');
                   setTimeout(() => event.target.setPlaybackQuality('small'), 1000);
                   event.target.setVolume(100);
+                  console.log('Плеер готов'); // Для дебага
+                },
+                onError: (event) => {
+                  console.error('Ошибка YouTube:', event.data); // Лог ошибок (5=HTML5, 150=invalid param)
+                  ytReady = false; // Сброс, если ошибка
                 }
               }
             });
           }
         
-          // Управление после загрузки DOM
+          // Ждём загрузку DOM
           document.addEventListener("DOMContentLoaded", () => {
             const btn = document.getElementById("playBtn");
             const vol = document.getElementById("volumeSlider");
         
             if (btn && vol) {
               btn.addEventListener("click", () => {
-                if (!ytReady) return;
+                if (!ytReady) {
+                  alert('Плеер загружается... Подожди секунду или перезагрузи страницу (Ctrl+F5).');
+                  return;
+                }
         
                 if (!isPlaying) {
+                  YTplayer.seekTo(0); // Фикс: сброс на live-позицию
                   YTplayer.playVideo();
                   btn.textContent = "⏸ Pause";
                   isPlaying = true;
@@ -88,7 +110,7 @@
               });
         
               vol.addEventListener("input", () => {
-                if (ytReady) {
+                if (ytReady && YTplayer) {
                   YTplayer.setVolume(vol.value * 100);
                 }
               });
