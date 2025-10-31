@@ -3,10 +3,84 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Аниме Радио Молдова — милое онлайн радио</title>
-<meta name="description" content="Аниме Радио Молдова — ламповое онлайн радио с милотой, сакурой и любимыми треками. Слушай эфир, знакомься с ведущими и заказывай музыку!" />
+<!-- Основные SEO-теги: Title и Description оптимизированы под топ-запросы "аниме радио онлайн Молдова" -->
+<title>Аниме Радио Молдова | Слушать аниме музыку онлайн бесплатно в Кишинёве</title>
+<meta name="description" content="Аниме Радио Молдова — онлайн радио с саундтреками аниме, j-pop, lofi и опенингами. Слушай эфир 24/7 бесплатно в Молдове, заказывай треки, знакомься с ведущими. Ламповый вайб с сакурой для Кишинёва и всей MD!" />
+<!-- Ключевые слова: фокус на локальные + нишевые запросы (аниме радио, онлайн радио Молдова, саундтреки аниме бесплатно) -->
+<meta name="keywords" content="аниме радио, аниме радио онлайн, слушать аниме музыку бесплатно, онлайн радио Молдова, аниме саундтреки, j-pop радио Кишинёв, lofi аниме, заказ треков аниме, радио аниме MD, опенинги аниме радио" />
+<!-- Robots: индексация всего для максимального охвата -->
+<meta name="robots" content="index, follow" />
+<!-- Canonical: избегай дубликатов -->
+<link rel="canonical" href="https://lamidnist.github.io/aniradiomd/" />
+<!-- Hreflang: для билингвальной Молдовы (RU основной, RO/EN для экспорта) -->
+<link rel="alternate" hreflang="ru" href="https://lamidnist.github.io/aniradiomd/" />
+<link rel="alternate" hreflang="ro" href="https://lamidnist.github.io/aniradiomd/ro/" />
+<link rel="alternate" hreflang="en" href="https://lamidnist.github.io/aniradiomd/en/" />
+<!-- Open Graph: для шаринга в соцсетях (VK, Telegram, IG — популярны в MD), повышает CTR -->
+<meta property="og:title" content="Аниме Радио Молдова | Онлайн аниме музыка бесплатно" />
+<meta property="og:description" content="Ламповое радио с аниме-треками, сакурой и уютом. Слушай 24/7 в Молдове!" />
+<meta property="og:image" content="https://lamidnist.github.io/aniradiomd/images/sakura-hero.jpg" /> <!-- Добавь реальное изображение (1200x630) с сакурой -->
+<meta property="og:url" content="https://lamidnist.github.io/aniradiomd" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Аниме Радио Молдова" />
+<!-- Twitter Cards: для X/Twitter, если используешь -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Аниме Радио Молдова | Аниме онлайн радио MD" />
+<meta name="twitter:description" content="Саундтреки, опенинги и lofi — бесплатно из Кишинёва!" />
+<meta name="twitter:image" content="https://lamidnist.github.io/aniradiomd/images/sakura-hero.jpg" />
+<!-- Локальное SEO: Schema.org для LocalBusiness (адрес онлайн, но с MD-фокусом; добавь реальный телефон/email) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Аниме Радио Молдова",
+  "description": "Онлайн радио с аниме-музыкой для Молдовы: саундтреки, j-pop, lofi 24/7",
+  "url": "https://lamidnist.github.io/aniradiomd/",
+  "email": "dima.nistorovich@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Кишинёв",
+    "addressRegion": "Молдова",
+    "addressCountry": "MD"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 47.0105,
+    "longitude": 28.8638
+  },
+  "openingHours": "Mo-Su 00:00-23:59",
+  "sameAs": [
+    "https://t.me/animeradiomd", <!-- Добавь реальные соцсети -->
+  ],
+  "additionalType": ["RadioStation"],
+  "audience": {
+    "@type": "Audience",
+    "name": "Аниме-фаны в Молдове"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Аниме Радио Молдова",
+  "url": "https://lamidnist.github.io/aniradiomd/",
+  "potentialAction": {
+    "@type": "ListenAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://lamidnist.github.io/aniradiomd/"
+    }
+  }
+}
+</script>
+<!-- Скорость: preconnect для YouTube и CSS (тренд 2025: Core Web Vitals) -->
+<link rel="preconnect" href="https://www.youtube.com" />
+<!-- Стили -->
 <link rel="stylesheet" href="styles.css"/>
 </head>
+
+
 <body>
   <canvas id="sakura" aria-hidden="true"></canvas>
   <header class="header">
@@ -113,11 +187,6 @@
             });
           });
         </script>
-
-
-
-
-
 
       </div>
   </header>
