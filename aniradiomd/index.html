@@ -42,8 +42,8 @@
         let isPlaying = false;
         
         function onYouTubeIframeAPIReady() {
-          player = new YT.YTplayer('ytplayer', {
-            videoId: 'VXU3eEwt3Pc', // <-- твой YouTube ID
+          YTplayer = new YT.Player('ytplayer', {
+            videoId: 'VXU3eEwt3Pc', // ID стрима YouTube
             playerVars: { 'autoplay': 0, 'controls': 0 }
           });
         }
@@ -67,6 +67,7 @@
           YTplayer.setVolume(vol.value * 100);
         });
         </script>
+
       </div>
   </header>
 
