@@ -31,22 +31,26 @@
       </nav>
         <div class="air-btn" id="playBtn" style="cursor: pointer;">Play</div>
         <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" style="accent-color:#d45fa7; width:40px; vertical-align:middle; margin-left:8px;">
-        
         <!-- Скрытый YouTube плеер -->
         <div id="ytplayer" style="width:1px;height:1px;overflow:hidden;"></div>
         
         <script src="https://www.youtube.com/iframe_api"></script>
-        
         <script>
-          let YTplayer;
+          let YTplayer = null;
           let isPlaying = false;
           let ytReady = false;
+          const videoId = 'pnqmZD9-9jM'; // Твой ID видео (LIVE)
         
-          function onYouTubeIframeAPIReady() {
+          // Функция создания плеера
+          function createPlayer() {
+            if (YTplayer) {
+              YTplayer.destroy(); // Уничтожаем старый плеер
+            }
+        
             YTplayer = new YT.Player('ytplayer', {
-              videoId: 'pnqmZD9-9jM',
+              videoId: videoId,
               playerVars: {
-                autoplay: 0,
+                autoplay: 1, // Автовоспроизведение сразу
                 controls: 0,
                 iv_load_policy: 3,
                 modestbranding: 1,
@@ -61,36 +65,52 @@
                   ytReady = true;
                   event.target.setPlaybackQuality('small');
                   setTimeout(() => event.target.setPlaybackQuality('small'), 1000);
-                  event.target.setVolume(100);
+                  const vol = document.getElementById("volumeSlider").value;
+                  event.target.setVolume(vol * 100);
+                },
+                onStateChange: (event) => {
+                  // Опционально: отслеживание завершения или ошибок
+                  if (event.data === YT.PlayerState.ENDED) {
+                    isPlaying = false;
+                    document.getElementById("playBtn").textContent = "Play";
+                  }
                 }
               }
             });
+          }
+        
+          // Инициализация API
+          function onYouTubeIframeAPIReady() {
+            // Плеер создаётся только по клику
           }
         
           document.addEventListener("DOMContentLoaded", () => {
             const btn = document.getElementById("playBtn");
             const vol = document.getElementById("volumeSlider");
         
-            if (btn && vol) {
-              btn.addEventListener("click", () => {
-                if (!ytReady) return;
-        
-                if (!isPlaying) {
-                  // Просто play — YouTube сам стартует с LIVE для прямого эфира
-                  YTplayer.playVideo();
-                  btn.textContent = "Pause";
-                  isPlaying = true;
-                } else {
-                  YTplayer.pauseVideo();
-                  btn.textContent = "Play";
-                  isPlaying = false;
+            btn.addEventListener("click", () => {
+              if (!isPlaying) {
+                // === ВОСПРОИЗВЕДЕНИЕ: создаём новый плеер ===
+                createPlayer();
+                btn.textContent = "Pause";
+                isPlaying = true;
+              } else {
+                // === ПАУЗА: уничтожаем плеер ===
+                if (YTplayer && ytReady) {
+                  YTplayer.destroy();
+                  YTplayer = null;
+                  ytReady = false;
                 }
-              });
+                btn.textContent = "Play";
+                isPlaying = false;
+              }
+            });
         
-              vol.addEventListener("input", () => {
-                if (ytReady) YTplayer.setVolume(vol.value * 100);
-              });
-            }
+            vol.addEventListener("input", () => {
+              if (YTplayer && ytReady) {
+                YTplayer.setVolume(vol.value * 100);
+              }
+            });
           });
         </script>
 
