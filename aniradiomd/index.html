@@ -32,8 +32,7 @@
         <div class="air-btn" id="playBtn" style="cursor: pointer;">▶ Play</div>
         <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" style="accent-color:#d45fa7; width:40px; vertical-align:right">
         
-        <!-- Скрытый YouTube плеер -->
-        <div id="ytplayer" style="width:0;height:0;overflow:hidden;"></div>
+        <div id="ytplayer" style="width:1px;height:1px;overflow:hidden;"></div>
         
         <script src="https://www.youtube.com/iframe_api"></script>
         
@@ -41,10 +40,28 @@
         let YTplayer;
         let isPlaying = false;
         
-        function onYouTubeIframeAPIReady() {
+        function createPlayer() {
+          if (YTplayer) {
+            // удаляем старый плеер
+            YTplayer.destroy();
+          }
+          
           YTplayer = new YT.Player('ytplayer', {
-            videoId: 'VXU3eEwt3Pc', // ID стрима YouTube
-            playerVars: { 'autoplay': 0, 'controls': 0 }
+            videoId: 'VXU3eEwt3Pc',
+            playerVars: {
+              autoplay: 1,
+              controls: 0,
+              iv_load_policy: 3,
+              modestbranding: 1,
+              playsinline: 1,
+              disablekb: 1
+            },
+            events: {
+              'onReady': (event) => {
+                event.target.setPlaybackQuality('small');
+                event.target.playVideo();
+              }
+            }
           });
         }
         
@@ -53,20 +70,23 @@
         
         btn.addEventListener("click", () => {
           if (!isPlaying) {
-            YTplayer.playVideo();
+            createPlayer(); // всегда создаём новый плеер → эфир "живой"
             btn.textContent = "⏸ Pause";
             isPlaying = true;
           } else {
-            YTplayer.pauseVideo();
+            if (YTplayer) YTplayer.stopVideo(); // останавливаем текущий
             btn.textContent = "▶ Play";
             isPlaying = false;
           }
         });
         
         vol.addEventListener("input", () => {
-          YTplayer.setVolume(vol.value * 100);
+          if (YTplayer && YTplayer.setVolume) {
+            YTplayer.setVolume(vol.value * 100);
+          }
         });
         </script>
+
 
       </div>
   </header>
