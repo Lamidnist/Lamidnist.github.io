@@ -3,236 +3,85 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Основные SEO-теги: Title и Description оптимизированы под топ-запросы "аниме радио онлайн Молдова" -->
 <title>Аниме Радио Молдова | Слушать аниме музыку онлайн бесплатно в Кишинёве</title>
 <meta name="description" content="Аниме Радио Молдова — онлайн радио с саундтреками аниме, j-pop, lofi и опенингами. Слушай эфир 24/7 бесплатно в Молдове, заказывай треки, знакомься с ведущими. Ламповый вайб с сакурой для Кишинёва и всей MD!" />
+<!-- Ключевые слова: фокус на локальные + нишевые запросы (аниме радио, онлайн радио Молдова, саундтреки аниме бесплатно) -->
 <meta name="keywords" content="аниме радио, аниме радио онлайн, слушать аниме музыку бесплатно, онлайн радио Молдова, аниме саундтреки, j-pop радио Кишинёв, lofi аниме, заказ треков аниме, радио аниме MD, опенинги аниме радио" />
+<!-- Robots: индексация всего для максимального охвата -->
 <meta name="robots" content="index, follow" />
+<!-- Canonical: избегай дубликатов -->
 <link rel="canonical" href="https://lamidnist.github.io/aniradiomd/" />
+<!-- Hreflang: для билингвальной Молдовы (RU основной, RO/EN для экспорта) -->
 <link rel="alternate" hreflang="ru" href="https://lamidnist.github.io/aniradiomd/" />
 <link rel="alternate" hreflang="ro" href="https://lamidnist.github.io/aniradiomd/ro/" />
 <link rel="alternate" hreflang="en" href="https://lamidnist.github.io/aniradiomd/en/" />
+<!-- Open Graph: для шаринга в соцсетях (VK, Telegram, IG — популярны в MD), повышает CTR -->
 <meta property="og:title" content="Аниме Радио Молдова | Онлайн аниме музыка бесплатно" />
 <meta property="og:description" content="Ламповое радио с аниме-треками, сакурой и уютом. Слушай 24/7 в Молдове!" />
-<meta property="og:image" content="https://lamidnist.github.io/aniradiomd/images/sakura-hero.jpg" />
+<meta property="og:image" content="https://lamidnist.github.io/aniradiomd/images/sakura-hero.jpg" /> <!-- Добавь реальное изображение (1200x630) с сакурой -->
 <meta property="og:url" content="https://lamidnist.github.io/aniradiomd" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Аниме Радио Молдова" />
+<!-- Twitter Cards: для X/Twitter, если используешь -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Аниме Радио Молдова | Аниме онлайн радио MD" />
 <meta name="twitter:description" content="Саундтреки, опенинги и lofi — бесплатно из Кишинёва!" />
 <meta name="twitter:image" content="https://lamidnist.github.io/aniradiomd/images/sakura-hero.jpg" />
+<!-- Локальное SEO: Schema.org для LocalBusiness (адрес онлайн, но с MD-фокусом; добавь реальный телефон/email) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Аниме Радио Молдова",
+  "description": "Онлайн радио с аниме-музыкой для Молдовы: саундтреки, j-pop, lofi 24/7",
+  "url": "https://lamidnist.github.io/aniradiomd/",
+  "email": "dima.nistorovich@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Кишинёв",
+    "addressRegion": "Молдова",
+    "addressCountry": "MD"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 47.0105,
+    "longitude": 28.8638
+  },
+  "openingHours": "Mo-Su 00:00-23:59",
+  "sameAs": [
+    "https://t.me/animeradiomd", <!-- Добавь реальные соцсети -->
+  ],
+  "additionalType": ["RadioStation"],
+  "audience": {
+    "@type": "Audience",
+    "name": "Аниме-фаны в Молдове"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Аниме Радио Молдова",
+  "url": "https://lamidnist.github.io/aniradiomd/",
+  "potentialAction": {
+    "@type": "ListenAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://lamidnist.github.io/aniradiomd/"
+    }
+  }
+}
+</script>
+<!-- Скорость: preconnect для YouTube и CSS (тренд 2025: Core Web Vitals) -->
 <link rel="preconnect" href="https://www.youtube.com" />
-
-<!-- Встроенные стили с мобильной адаптацией -->
-<style>
-  :root {
-    --pink: #d45fa7;
-    --soft-pink: #ffc0e1;
-    --bg: #fff8fd;
-    --text: #5c4b6d;
-  }
-  html.night {
-    --pink: #ff8ccf;
-    --soft-pink: #f3a9cc;
-    --bg: #1a1423;
-    --text: #e0cfe6;
-  }
-  body {
-    margin: 0;
-    font-family: system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.5;
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
-  }
-  a { color: var(--pink); text-decoration: none; }
-  h1, h2 { color: #6d4b8c; margin: 0; }
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .8s, transform .8s; }
-  .reveal.show { opacity: 1; transform: none; }
-
-  /* Header и навигация */
-  .header {
-    position: sticky;
-    top: 0;
-    background: rgba(255,248,253,0.85);
-    backdrop-filter: blur(10px);
-    z-index: 100;
-    border-bottom: 1px solid #ffe6f3;
-  }
-  html.night .header { background: rgba(26,20,35,0.85); border-color: #3a2a4a; }
-  .bar {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    box-sizing: border-box;
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: bold;
-    color: var(--text);
-    flex-shrink: 0;
-  }
-  .logo-badge {
-    width: 50px; height: 50px;
-    background: var(--pink);
-    border-radius: 50%;
-  }
-  .brand-title { font-size: 1.3rem; }
-  .brand-sub { font-size: 0.85rem; opacity: 0.8; }
-
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    flex: 1;
-    justify-content: center;
-  }
-  .nav-link {
-    font-size: 0.95rem;
-    white-space: nowrap;
-  }
-  .air-btn {
-    background: var(--pink);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 30px;
-    font-weight: bold;
-    white-space: nowrap;
-  }
-
-  /* Hero */
-  .hero {
-    padding: 60px 20px 40px;
-    text-align: center;
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-  .hero-card { margin: 40px 0; }
-  .title { font-size: 2.5rem; line-height: 1.2; margin: 16px 0; }
-  .subtitle { font-size: 1.2rem; opacity: 0.9; max-width: 700px; margin: 0 auto; }
-  .pill-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 30px; }
-  .pill {
-    background: #ffe6f3;
-    padding: 8px 16px;
-    border-radius: 30px;
-    font-size: 0.9rem;
-  }
-  html.night .pill { background: #3a2a4a; }
-
-  /* Grid и карточки */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-    box-sizing: border-box;
-  }
-  .card {
-    grid-column: span 12;
-    background: rgba(255,255,255,0.6);
-    padding: 24px;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(212,95,167,0.1);
-  }
-  html.night .card { background: rgba(40,30,55,0.6); }
-
-  .section {
-    padding: 80px 0;
-  }
-  .section h2 {
-    text-align: center;
-    font-size: 2.2rem;
-    margin-bottom: 50px;
-  }
-
-  /* Мобильная адаптация */
-  @media (max-width: 1024px) {
-    .title { font-size: 2.2rem; }
-    nav { gap: 12px; }
-    .nav-link { font-size: 0.9rem; }
-  }
-
-  @media (max-width: 768px) {
-    .bar {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 16px;
-    }
-    nav {
-      order: 3;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .logo, .air-btn { align-self: center; }
-    #volumeSlider { width: 100px; }
-
-    .title { font-size: 1.9rem; }
-    .subtitle { font-size: 1.1rem; }
-
-    .grid { grid-template-columns: 1fr; padding: 0 16px; }
-    .card { grid-column: 1 / -1; }
-    [style*="grid-column: span"] { grid-column: 1 / -1 !important; }
-
-    .section { padding: 60px 0; }
-    .section h2 { font-size: 1.8rem; margin-bottom: 40px; }
-  }
-
-  @media (max-width: 480px) {
-    .brand-title { font-size: 1.1rem; }
-    .brand-sub { font-size: 0.8rem; }
-    .pill-row { flex-direction: column; align-items: center; }
-    .pill { width: 80%; text-align: center; }
-  }
-
-  /* Остальные стили (социалки, формы и т.д.) */
-  .socials { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-  .social {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 20px;
-    background: rgba(255,255,255,0.5);
-    border-radius: 16px;
-  }
-  .form { display: grid; gap: 16px; }
-  .input, .textarea {
-    padding: 12px;
-    border: 1px solid #e6d6f0;
-    border-radius: 12px;
-    font: inherit;
-  }
-  .textarea { min-height: 100px; resize: vertical; }
-  .mini { padding: 10px 16px; background: var(--pink); color: white; border: none; border-radius: 12px; cursor: pointer; }
-
-  .footer {
-    text-align: center;
-    padding: 40px 20px;
-    font-size: 0.9rem;
-    opacity: 0.8;
-  }
-
-  .toggle-wrap {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
-  }
-  .toggle { transform: scale(1.4); }
-
-  canvas#sakura { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
-</style>
+<!-- Стили -->
+<link rel="stylesheet" href="styles.css"/>
 </head>
-<body>  
+
+
+<body>
   <canvas id="sakura" aria-hidden="true"></canvas>
   <header class="header">
     <div class="bar">
