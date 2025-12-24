@@ -552,37 +552,56 @@
     }
 
     draw();
-  })();
-
-  // Скрытие/показ навигации при скролле (только на мобильных)
-if (window.innerWidth <= 768) {
-    let lastScrollTop = 0;
+    
+// Скрытие/показ навигации при скролле — только на мобильных (≤768px)
+(function() {
     const navElement = document.querySelector('nav');
+    if (!navElement) return;
 
-    window.addEventListener('scroll', () => {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    let lastScrollTop = 0;
+    let ticking = false;
 
-        if (scrollTop > lastScrollTop) {
-            // Скроллим вниз → скрываем нав
+    function updateNav() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Скролл вниз — скрываем
             navElement.classList.remove('show');
-        } else {
-            // Скроллим вверх → показываем нав
-            if (scrollTop > 100) { // показываем только если проскроллили чуть вниз
-                navElement.classList.add('show');
-            }
+        } else if (scrollTop < lastScrollTop) {
+            // Скролл вверх — показываем
+            navElement.classList.add('show');
         }
 
-        // Если в самом верху — тоже скрываем (чтобы не мешала шапка)
-        if (scrollTop < 50) {
+        // В самом верху страницы — скрываем нав, чтобы не перекрывала шапку
+        if (scrollTop < 80) {
             navElement.classList.remove('show');
         }
 
         lastScrollTop = scrollTop;
-    });
+        ticking = false;
+    }
 
-    // Изначально скрываем при загрузке
-    navElement.classList.remove('show');
-}
+    function onScroll() {
+        if (!ticking) {
+            requestAnimationFrame(updateNav);
+            ticking = true;
+        }
+    }
+
+    // Проверяем, мобильное ли устройство (включая смену ориентации/размера окна)
+    function checkMobile() {
+        if (window.innerWidth <= 768) {
+            window.addEventListener('scroll', onScroll);
+            navElement.classList.remove('show'); // изначально скрыта
+        } else {
+            window.removeEventListener('scroll', onScroll);
+            navElement.classList.remove('show'); // на десктопе можно вообще не применять класс, но безопасно
+        }
+    }
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+})();
 </script>
 </body>
 </html>
