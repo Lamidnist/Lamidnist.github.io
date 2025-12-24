@@ -553,6 +553,36 @@
 
     draw();
   })();
+
+  // Скрытие/показ навигации при скролле (только на мобильных)
+if (window.innerWidth <= 768) {
+    let lastScrollTop = 0;
+    const navElement = document.querySelector('nav');
+
+    window.addEventListener('scroll', () => {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+            // Скроллим вниз → скрываем нав
+            navElement.classList.remove('show');
+        } else {
+            // Скроллим вверх → показываем нав
+            if (scrollTop > 100) { // показываем только если проскроллили чуть вниз
+                navElement.classList.add('show');
+            }
+        }
+
+        // Если в самом верху — тоже скрываем (чтобы не мешала шапка)
+        if (scrollTop < 50) {
+            navElement.classList.remove('show');
+        }
+
+        lastScrollTop = scrollTop;
+    });
+
+    // Изначально скрываем при загрузке
+    navElement.classList.remove('show');
+}
 </script>
 </body>
 </html>
