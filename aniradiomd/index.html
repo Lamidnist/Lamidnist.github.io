@@ -552,55 +552,6 @@
     }
 
     draw();
-    
-// Скрытие/показ навигации при скролле — только на мобильных (≤768px)
-(function() {
-    const navElement = document.querySelector('nav');
-    if (!navElement) return;
-
-    let lastScrollTop = 0;
-    let ticking = false;
-
-    function updateNav() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (scrollTop > lastScrollTop && scrollTop > 100) {
-            // Скролл вниз — скрываем
-            navElement.classList.remove('show');
-        } else if (scrollTop < lastScrollTop) {
-            // Скролл вверх — показываем
-            navElement.classList.add('show');
-        }
-
-        // В самом верху страницы — скрываем нав, чтобы не перекрывала шапку
-        if (scrollTop < 80) {
-            navElement.classList.remove('show');
-        }
-
-        lastScrollTop = scrollTop;
-        ticking = false;
-    }
-
-    function onScroll() {
-        if (!ticking) {
-            requestAnimationFrame(updateNav);
-            ticking = true;
-        }
-    }
-
-    // Проверяем, мобильное ли устройство (включая смену ориентации/размера окна)
-    function checkMobile() {
-        if (window.innerWidth <= 768) {
-            window.addEventListener('scroll', onScroll);
-            navElement.classList.remove('show'); // изначально скрыта
-        } else {
-            window.removeEventListener('scroll', onScroll);
-            navElement.classList.remove('show'); // на десктопе можно вообще не применять класс, но безопасно
-        }
-    }
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
 })();
 </script>
 </body>
