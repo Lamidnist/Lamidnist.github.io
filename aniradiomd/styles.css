@@ -395,122 +395,99 @@ color:#eadeff;
     .hero {grid-template-columns: 1fr}
     .hero h1{font-size:32px}
 }
-
-
- @media (max-width: 768px) {
-
+@media (max-width: 768px) {
     .bar {
-
       flex-direction: column;
-
       align-items: stretch;
-
       gap: 16px;
-
     }
-
     nav {
-
       order: 3;
-
       justify-content: center;
-
       flex-wrap: wrap;
-
+    }
+    .logo, .air-btn { align-self: center; }
+    #volumeSlider { width: 100px; }
+    .title { font-size: 1.9rem; }
+    .subtitle { font-size: 1.1rem; }
+    .grid { grid-template-columns: 1fr; padding: 0 16px; }
+    .card { grid-column: 1 / -1; }
+    [style*="grid-column: span"] { grid-column: 1 / -1 !important; }
+    .section { padding: 60px 0; }
+    .section h2 { font-size: 1.8rem; margin-bottom: 40px; }
+    .air-btn {
+        align-self: center; /* центрируем по вертикали в строке */
+        margin-right: 12px; /* отступ справа от слайдера */
+        min-width: 80px;    /* чтобы кнопка не сжималась слишком сильно */
+        text-align: center;
     }
 
-    .logo, .air-btn { align-self: center; }
+    #volumeSlider {
+        width: 120px;       /* чуть шире, чтобы удобно было двигать пальцем */
+        margin-left: 0;     /* убираем старый margin-left */
+        align-self: center;
+    }
 
-    #volumeSlider { width: 100px; }
+    /* Оборачиваем Play и Volume в одну строку */
+    .bar > .air-btn,
+    .bar > #volumeSlider {
+        order: 2;           /* ставим их сразу после logo, перед nav */
+        align-self: center;
+    }
 
-    .title { font-size: 1.9rem; }
+    /* Новый flex-контейнер для кнопки и слайдера */
+    .bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
 
-    .subtitle { font-size: 1.1rem; }
+    /* Добавляем отдельный ряд для плеера */
+    .player-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        order: 2;
+        width: 100%;
+    }
+}
 
-    .grid { grid-template-columns: 1fr; padding: 0 16px; }
-
-    .card { grid-column: 1 / -1; }
-
-    [style*="grid-column: span"] { grid-column: 1 / -1 !important; }
-
-    .section { padding: 60px 0; }
-
-    .section h2 { font-size: 1.8rem; margin-bottom: 40px; }
-
-  }
-
-  @media (max-width: 480px) {
-
+@media (max-width: 480px) {
     .brand-title { font-size: 1.1rem; }
-
     .brand-sub { font-size: 0.8rem; }
-
     .pill-row { flex-direction: column; align-items: center; }
-
     .pill { width: 80%; text-align: center; }
-
   }
-
   /* Остальные стили (социалки, формы и т.д.) */
-
   .socials { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-
   .social {
-
     display: flex;
-
     align-items: center;
-
     gap: 10px;
-
     padding: 12px 20px;
-
     background: rgba(255,255,255,0.5);
-
     border-radius: 16px;
-
   }
-
   .form { display: grid; gap: 16px; }
-
   .input, .textarea {
-
     padding: 12px;
-
     border: 1px solid #e6d6f0;
-
     border-radius: 12px;
-
     font: inherit;
-
   }
-
   .textarea { min-height: 100px; resize: vertical; }
-
   .mini { padding: 10px 16px; background: var(--pink); color: white; border: none; border-radius: 12px; cursor: pointer; }
-
   .footer {
-
     text-align: center;
-
     padding: 40px 20px;
-
     font-size: 0.9rem;
-
     opacity: 0.8;
-
   }
-
   .toggle-wrap {
-
     position: fixed;
-
     bottom: 20px;
-
     right: 20px;
-
     z-index: 100;
-
   }
-
   .toggle { transform: scale(1.4); }
