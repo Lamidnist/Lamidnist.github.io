@@ -74,8 +74,8 @@
   }
 }
 </script>
-<!-- Скорость: preconnect для YouTube и CSS (тренд 2025: Core Web Vitals) -->
-<link rel="preconnect" href="https://www.youtube.com" />
+<!-- Скорость: preconnect для потока (Core Web Vitals) -->
+<link rel="preconnect" href="https://defense-diamond-sage-dirt.trycloudflare.com" />
 <!-- Стили -->
 <link rel="stylesheet" href="styles.css"/>
 </head>
@@ -104,90 +104,63 @@
         <a class="nav-link" href="#faq">FAQ</a>
       </nav>
         <div class="player-controls">
-            <div class="air-btn" id="playBtn" style="cursor: pointer;">Play</div>
-            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+          <button class="air-btn" id="playBtn" aria-label="Воспроизвести" style="cursor:pointer;border:none;">▶ Play</button>
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.8" title="Громкость">
         </div>
-        <!-- Скрытый YouTube плеер -->
-        <div id="ytplayer" style="width:1px;height:1px;overflow:hidden;"></div>
-        
-        <script src="https://www.youtube.com/iframe_api"></script>
+        <!-- Аудио-поток -->
+        <audio id="radioStream" preload="none">
+          <source src="https://defense-diamond-sage-dirt.trycloudflare.com/stream" type="audio/mpeg">
+        </audio>
         <script>
-          let YTplayer = null;
-          let isPlaying = false;
-          let ytReady = false;
-          const videoId = 'pnqmZD9-9jM'; // Твой ID видео (LIVE)
-        
-          // Функция создания плеера
-          function createPlayer() {
-            if (YTplayer) {
-              YTplayer.destroy(); // Уничтожаем старый плеер
-            }
-        
-            YTplayer = new YT.Player('ytplayer', {
-              videoId: videoId,
-              playerVars: {
-                autoplay: 1, // Автовоспроизведение сразу
-                controls: 0,
-                iv_load_policy: 3,
-                modestbranding: 1,
-                playsinline: 1,
-                disablekb: 1,
-                rel: 0,
-                fs: 0,
-                enablejsapi: 1
-              },
-              events: {
-                onReady: (event) => {
-                  ytReady = true;
-                  event.target.setPlaybackQuality('small');
-                  setTimeout(() => event.target.setPlaybackQuality('small'), 1000);
-                  const vol = document.getElementById("volumeSlider").value;
-                  event.target.setVolume(vol * 100);
-                },
-                onStateChange: (event) => {
-                  // Опционально: отслеживание завершения или ошибок
-                  if (event.data === YT.PlayerState.ENDED) {
-                    isPlaying = false;
-                    document.getElementById("playBtn").textContent = "Play";
-                  }
+          (function() {
+            const STREAM_URL = 'https://defense-diamond-sage-dirt.trycloudflare.com/stream';
+            let isPlaying = false;
+
+            document.addEventListener('DOMContentLoaded', function() {
+              const btn = document.getElementById('playBtn');
+              const vol = document.getElementById('volumeSlider');
+              const audio = document.getElementById('radioStream');
+
+              audio.volume = parseFloat(vol.value);
+
+              btn.addEventListener('click', function() {
+                if (!isPlaying) {
+                  // Создаём новый src каждый раз, чтобы не использовать кэш
+                  audio.src = '';
+                  audio.load();
+                  audio.src = STREAM_URL + '?_=' + Date.now();
+                  audio.volume = parseFloat(vol.value);
+                  var p = audio.play();
+                  if (p && p.catch) p.catch(function() {});
+                  btn.textContent = '⏸ Pause';
+                  btn.setAttribute('aria-label', 'Пауза');
+                  isPlaying = true;
+                } else {
+                  audio.pause();
+                  audio.src = '';
+                  audio.load();
+                  btn.textContent = '▶ Play';
+                  btn.setAttribute('aria-label', 'Воспроизвести');
+                  isPlaying = false;
                 }
-              }
-            });
-          }
-        
-          // Инициализация API
-          function onYouTubeIframeAPIReady() {
-            // Плеер создаётся только по клику
-          }
-        
-          document.addEventListener("DOMContentLoaded", () => {
-            const btn = document.getElementById("playBtn");
-            const vol = document.getElementById("volumeSlider");
-        
-            btn.addEventListener("click", () => {
-              if (!isPlaying) {
-                // === ВОСПРОИЗВЕДЕНИЕ: создаём новый плеер ===
-                createPlayer();
-                btn.textContent = "Pause";
-                isPlaying = true;
-              } else {
-                // === ПАУЗА: уничтожаем плеер ===
-                if (YTplayer && ytReady) {
-                  YTplayer.destroy();
-                  YTplayer = null;
-                  ytReady = false;
-                }
-                btn.textContent = "Play";
+              });
+
+              vol.addEventListener('input', function() {
+                audio.volume = parseFloat(vol.value);
+              });
+
+              audio.addEventListener('error', function() {
+                btn.textContent = '▶ Play';
+                btn.setAttribute('aria-label', 'Воспроизвести');
                 isPlaying = false;
-              }
+              });
+
+              audio.addEventListener('ended', function() {
+                btn.textContent = '▶ Play';
+                isPlaying = false;
+              });
             });
-        
-            vol.addEventListener("input", () => {
-              if (YTplayer && ytReady) {
-                YTplayer.setVolume(vol.value * 100);
-              }
-            });
-          });
+          })();
         </script>
 
       </div>
@@ -449,12 +422,14 @@
     document.documentElement.classList.add('night');
   }
 
-  // Плеер: простое состояние
-  const player = document.getElementById('player');
+  // Плеер: статус потока
+  const radioAudio = document.getElementById('radioStream');
   const np = document.getElementById('np');
-  player.addEventListener('play', ()=> np.innerHTML = 'Сейчас в эфире: <strong>идёт поток…</strong>');
-  player.addEventListener('pause', ()=> np.innerHTML = 'Сейчас в эфире: <strong>пауза</strong>');
-  player.addEventListener('error', ()=> np.innerHTML = 'Сейчас в эфире: <strong>ошибка загрузки</strong> — попробуйте «Открыть поток».');
+  if (radioAudio && np) {
+    radioAudio.addEventListener('play', ()=> np.innerHTML = 'Сейчас в эфире: <strong>идёт поток…</strong>');
+    radioAudio.addEventListener('pause', ()=> np.innerHTML = 'Сейчас в эфире: <strong>пауза</strong>');
+    radioAudio.addEventListener('error', ()=> np.innerHTML = 'Сейчас в эфире: <strong>ошибка загрузки</strong> — попробуйте чуть позже.');
+  }
 
   // Заявка трека через mailto
   function requestTrack(e){
