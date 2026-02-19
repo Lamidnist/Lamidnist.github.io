@@ -31,6 +31,12 @@
 <!-- ═══════════ CANVAS ═══════════ -->
 <canvas id="cosmos" aria-hidden="true"></canvas>
 
+<!-- ═══════════ MOUSE SPARKLE TRAIL ═══════════ -->
+<div id="sparkleTrail" aria-hidden="true"></div>
+
+<!-- ═══════════ CLICK BURST ═══════════ -->
+<div id="clickBurst" aria-hidden="true"></div>
+
 <!-- ═══════════ HEADER ═══════════ -->
 <header class="header" id="top">
   <div class="header__inner">
@@ -88,10 +94,21 @@
       <a href="#about" class="btn btn--ghost">Узнать больше</a>
     </div>
     <div class="hero__pills" data-aos="fade-up" data-aos-delay="600">
-      <span class="pill">без рекламы</span>
-      <span class="pill">сакура-дождь</span>
-      <span class="pill">24/7</span>
-      <span class="pill">lofi &amp; j-pop</span>
+      <span class="pill pill--bounce">🌸 без рекламы</span>
+      <span class="pill pill--bounce">🎀 сакура-дождь</span>
+      <span class="pill pill--bounce">⭐ 24/7</span>
+      <span class="pill pill--bounce">🎧 lofi &amp; j-pop</span>
+      <span class="pill pill--bounce">🐱 кавай</span>
+      <span class="pill pill--bounce">✨ ламповость</span>
+    </div>
+
+    <!-- Kawaii floating kaomoji around hero -->
+    <div class="hero__kaomoji" aria-hidden="true">
+      <span class="hero__kao hero__kao--1">(◕‿◕✿)</span>
+      <span class="hero__kao hero__kao--2">✧˖°</span>
+      <span class="hero__kao hero__kao--3">(⁀ᗢ⁀)</span>
+      <span class="hero__kao hero__kao--4">♪♫</span>
+      <span class="hero__kao hero__kao--5">☆ﾟ.*</span>
     </div>
   </div>
 
@@ -107,6 +124,29 @@
     </div>
   </div>
 </section>
+
+<!-- ═══════════ ANIME QUOTES TICKER ═══════════ -->
+<div class="ticker" data-aos="fade-up">
+  <div class="ticker__track">
+    <span class="ticker__item">✦ «Я верю, что слёзы, пролитые однажды, обязательно станут силой» — Наруто</span>
+    <span class="ticker__item">🌸 «Даже зимой сакура ждёт своего момента» — Рурони Кенсин</span>
+    <span class="ticker__item">🎵 «Музыка — это мост между сердцами» — Shigatsu wa Kimi no Uso</span>
+    <span class="ticker__item">⭐ «Неважно, как медленно ты идёшь — главное не останавливайся» — One Piece</span>
+    <span class="ticker__item">💜 «Нет ничего невозможного для того, кто верит» — Fairy Tail</span>
+    <span class="ticker__item">🎧 «Мелодия, которая касается души, никогда не будет забыта» — Angel Beats!</span>
+    <span class="ticker__item">🌙 «Даже маленький огонёк может осветить тьму» — Demon Slayer</span>
+    <span class="ticker__item">✨ «Настоящая сила — в доброте» — Fruits Basket</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker__item">✦ «Я верю, что слёзы, пролитые однажды, обязательно станут силой» — Наруто</span>
+    <span class="ticker__item">🌸 «Даже зимой сакура ждёт своего момента» — Рурони Кенсин</span>
+    <span class="ticker__item">🎵 «Музыка — это мост между сердцами» — Shigatsu wa Kimi no Uso</span>
+    <span class="ticker__item">⭐ «Неважно, как медленно ты идёшь — главное не останавливайся» — One Piece</span>
+    <span class="ticker__item">💜 «Нет ничего невозможного для того, кто верит» — Fairy Tail</span>
+    <span class="ticker__item">🎧 «Мелодия, которая касается души, никогда не будет забыта» — Angel Beats!</span>
+    <span class="ticker__item">🌙 «Даже маленький огонёк может осветить тьму» — Demon Slayer</span>
+    <span class="ticker__item">✨ «Настоящая сила — в доброте» — Fruits Basket</span>
+  </div>
+</div>
 
 <!-- ═══════════ PLAYER ═══════════ -->
 <section id="player" class="section">
@@ -153,11 +193,30 @@
       <audio id="radioStream" preload="auto"
              src="https://defense-diamond-sage-dirt.trycloudflare.com/stream"></audio>
     </div>
+
+    <!-- ═══ Mood Reactions ═══ -->
+    <div class="mood" data-aos="fade-up" data-aos-delay="200">
+      <span class="mood__label">Настроение эфира:</span>
+      <div class="mood__btns">
+        <button class="mood__btn" data-mood="love" title="Кавай!">💖</button>
+        <button class="mood__btn" data-mood="fire" title="Огонь!">🔥</button>
+        <button class="mood__btn" data-mood="chill" title="Чилл~">🍵</button>
+        <button class="mood__btn" data-mood="cry" title="До слёз">🥹</button>
+        <button class="mood__btn" data-mood="dance" title="Танцую!">💃</button>
+        <button class="mood__btn" data-mood="sleep" title="Засыпаю~">😴</button>
+      </div>
+      <div class="mood__counter" id="moodCounter"></div>
+    </div>
   </div>
 </section>
 
+<!-- ═══════════ WAVE DIVIDER ═══════════ -->
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0,30 Q150,0 300,30 T600,30 T900,30 T1200,30 V60 H0Z" fill="var(--bg-secondary)"/></svg>
+</div>
+
 <!-- ═══════════ HOSTS ═══════════ -->
-<section id="hosts" class="section section--alt">
+<section id="hosts" class="section section--alt section--sparkle">
   <div class="section__inner">
     <h2 class="section__title" data-aos="fade-up">
       <span class="section__title-icon">🎙</span>
@@ -166,42 +225,51 @@
     <p class="section__desc" data-aos="fade-up" data-aos-delay="100">Каждый — со своим характером и настроением эфира</p>
 
     <div class="hosts-grid">
-      <article class="host-card" data-aos="fade-up" data-aos-delay="100">
+      <article class="host-card host-card--kawaii" data-aos="fade-up" data-aos-delay="100">
         <div class="host-card__glow host-card__glow--pink"></div>
+        <div class="host-card__sparkles" aria-hidden="true">✦✧✦</div>
         <div class="host-card__avatar">
           <div class="host-card__avatar-face">✦</div>
+          <div class="host-card__avatar-ring"></div>
         </div>
         <div class="host-card__body">
           <h3 class="host-card__name">Ламиднист</h3>
-          <span class="host-card__badge">легенда эфира</span>
+          <span class="host-card__badge">✨ легенда эфира</span>
           <p class="host-card__role">голос теплых ночей • подборка «Сакура-лофи»</p>
           <p class="host-card__desc">любит soft blue + warm tones, облачные вайбы</p>
+          <div class="host-card__kaomoji">(◕‿◕✿)</div>
         </div>
       </article>
 
-      <article class="host-card" data-aos="fade-up" data-aos-delay="200">
+      <article class="host-card host-card--kawaii" data-aos="fade-up" data-aos-delay="200">
         <div class="host-card__glow host-card__glow--blue"></div>
+        <div class="host-card__sparkles" aria-hidden="true">❀✿❀</div>
         <div class="host-card__avatar">
           <div class="host-card__avatar-face">❀</div>
+          <div class="host-card__avatar-ring"></div>
         </div>
         <div class="host-card__body">
           <h3 class="host-card__name">Сакурако</h3>
-          <span class="host-card__badge host-card__badge--blue">утренняя фея</span>
+          <span class="host-card__badge host-card__badge--blue">🌸 утренняя фея</span>
           <p class="host-card__role">утренние опенинги • «Петальки Добра»</p>
           <p class="host-card__desc">обожает ретро-аниме и уютные болталки</p>
+          <div class="host-card__kaomoji">(⁀ᗢ⁀)</div>
         </div>
       </article>
 
-      <article class="host-card" data-aos="fade-up" data-aos-delay="300">
+      <article class="host-card host-card--kawaii" data-aos="fade-up" data-aos-delay="300">
         <div class="host-card__glow host-card__glow--purple"></div>
+        <div class="host-card__sparkles" aria-hidden="true">🌙✧🌙</div>
         <div class="host-card__avatar">
           <div class="host-card__avatar-face">🐻</div>
+          <div class="host-card__avatar-ring"></div>
         </div>
         <div class="host-card__body">
           <h3 class="host-card__name">Кума-сан</h3>
-          <span class="host-card__badge host-card__badge--purple">ночной чилл</span>
+          <span class="host-card__badge host-card__badge--purple">🌙 ночной чилл</span>
           <p class="host-card__role">ночные лофай-сеты • «Медвежий Чилл»</p>
           <p class="host-card__desc">приглушённый свет, теплые синты, мягкая перкуссия</p>
+          <div class="host-card__kaomoji">(￣ω￣)zzZ</div>
         </div>
       </article>
     </div>
@@ -396,6 +464,60 @@
   </div>
 </section>
 
+<!-- ═══════════ ANIME GENRES CAROUSEL ═══════════ -->
+<section class="section genre-section">
+  <div class="section__inner">
+    <h2 class="section__title" data-aos="fade-up">
+      <span class="section__title-icon">🎶</span>
+      Жанры в эфире
+    </h2>
+    <p class="section__desc" data-aos="fade-up" data-aos-delay="100">Найди свой вайб ✨</p>
+
+    <div class="genres" data-aos="fade-up" data-aos-delay="200">
+      <div class="genre-card">
+        <div class="genre-card__emoji">🎹</div>
+        <div class="genre-card__name">Lofi</div>
+        <div class="genre-card__desc">мягкие биты для учёбы и мечт</div>
+      </div>
+      <div class="genre-card">
+        <div class="genre-card__emoji">🌸</div>
+        <div class="genre-card__name">J-Pop</div>
+        <div class="genre-card__desc">яркие хиты из Японии</div>
+      </div>
+      <div class="genre-card">
+        <div class="genre-card__emoji">⚔️</div>
+        <div class="genre-card__name">OP/ED</div>
+        <div class="genre-card__desc">опенинги и эндинги аниме</div>
+      </div>
+      <div class="genre-card">
+        <div class="genre-card__emoji">🌌</div>
+        <div class="genre-card__name">Ambient</div>
+        <div class="genre-card__desc">космос, тишина, атмосфера</div>
+      </div>
+      <div class="genre-card">
+        <div class="genre-card__emoji">🎷</div>
+        <div class="genre-card__name">Jazz-Hop</div>
+        <div class="genre-card__desc">тёплый джаз + хип-хоп биты</div>
+      </div>
+      <div class="genre-card">
+        <div class="genre-card__emoji">🎻</div>
+        <div class="genre-card__name">OST</div>
+        <div class="genre-card__desc">саундтреки, что трогают душу</div>
+      </div>
+      <div class="genre-card">
+        <div class="genre-card__emoji">🎤</div>
+        <div class="genre-card__name">Covers</div>
+        <div class="genre-card__desc">кавер-версии любимых тем</div>
+      </div>
+      <div class="genre-card">
+        <div class="genre-card__emoji">🌈</div>
+        <div class="genre-card__name">City Pop</div>
+        <div class="genre-card__desc">ретро-вайб 80-х Токио</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════ FAQ ═══════════ -->
 <section id="faq" class="section">
   <div class="section__inner">
@@ -433,6 +555,15 @@
   </div>
 </section>
 
+<!-- ═══════════ NEKO MASCOT ═══════════ -->
+<div class="neko" id="nekoMascot" title="Нажми на меня! (◕ᴗ◕✿)">
+  <div class="neko__body">
+    <div class="neko__face" id="nekoFace">🐱</div>
+    <div class="neko__bubble" id="nekoBubble">Ня~!</div>
+  </div>
+  <div class="neko__shadow"></div>
+</div>
+
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer class="footer">
   <div class="footer__inner">
@@ -440,10 +571,11 @@
       <span class="footer__sakura">✿</span>
       Аниме Радио Молдова
     </div>
-    <p class="footer__copy">© 2025 — Сделано с теплотой и лепестками сакуры</p>
+    <p class="footer__copy">© 2025 — Сделано с теплотой и лепестками сакуры 🌸</p>
+    <div class="footer__kawaii">Made with 💖 by аниме-души</div>
     <div class="footer__links">
-      <a href="mailto:dima.nistorovich@gmail.com">Почта</a>
-      <a href="#top">Наверх ↑</a>
+      <a href="mailto:dima.nistorovich@gmail.com">📮 Почта</a>
+      <a href="#top">🚀 Наверх</a>
     </div>
   </div>
 </footer>
@@ -679,6 +811,143 @@ function clearRequest() {
   document.getElementById('rq-track').value = '';
   document.getElementById('rq-note').value = '';
 }
+
+// ═══════════ KAWAII EXTRAS ═══════════
+
+// ─── Mouse Sparkle Trail ────
+(function() {
+  const sparkleEmoji = ['✦', '✧', '⋆', '✿', '♪', '♡', '☆', '⊹', '˚', '·'];
+  let lastSparkle = 0;
+  document.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastSparkle < 80) return; // throttle
+    lastSparkle = now;
+    const sp = document.createElement('span');
+    sp.className = 'sparkle';
+    sp.textContent = sparkleEmoji[Math.floor(Math.random() * sparkleEmoji.length)];
+    sp.style.left = (e.clientX + (Math.random() - 0.5) * 20) + 'px';
+    sp.style.top = (e.clientY + (Math.random() - 0.5) * 20) + 'px';
+    document.body.appendChild(sp);
+    setTimeout(() => sp.remove(), 800);
+  });
+})();
+
+// ─── Click Burst Effect ────
+(function() {
+  const burstEmoji = ['🌸', '✨', '💖', '⭐', '🎵', '🎀', '💫'];
+  document.addEventListener('click', (e) => {
+    // Don't burst on interactive elements
+    if (e.target.closest('button, a, input, textarea, select, details, .mood__btn')) return;
+    for (let i = 0; i < 6; i++) {
+      const p = document.createElement('span');
+      p.className = 'click-particle';
+      p.textContent = burstEmoji[Math.floor(Math.random() * burstEmoji.length)];
+      const angle = (Math.PI * 2 / 6) * i + Math.random() * 0.5;
+      const dist = 40 + Math.random() * 40;
+      p.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;--dx:${Math.cos(angle)*dist}px;--dy:${Math.sin(angle)*dist}px`;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 700);
+    }
+  });
+})();
+
+// ─── Neko Mascot ────
+(function() {
+  const neko = document.getElementById('nekoMascot');
+  const face = document.getElementById('nekoFace');
+  const bubble = document.getElementById('nekoBubble');
+  if (!neko) return;
+
+  const phrases = [
+    'Ня~! 🌸', 'Кавай! ✨', 'Слушай музыку~ ♪', 'Сакура! 🌸',
+    'Сугой~! ⭐', 'Ламповый вайб~', 'Аригато! 💖', 'Нян-нян! 🐱',
+    '(◕‿◕✿)', 'Ганбатте! 💪', 'Мяу~ ♡', 'Кимоти~! 🎀',
+    'Юмэ~ 🌙', 'Даёшь аниме! 🔥', 'Сенпай~! 💕'
+  ];
+  const faces = ['🐱', '😺', '😸', '😻', '🐾', '✿', '🌸'];
+
+  let bubbleTimer;
+  neko.addEventListener('click', () => {
+    face.textContent = faces[Math.floor(Math.random() * faces.length)];
+    bubble.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+    bubble.classList.add('show');
+    neko.style.animation = 'none';
+    neko.offsetHeight; // reflow
+    neko.style.animation = '';
+    clearTimeout(bubbleTimer);
+    bubbleTimer = setTimeout(() => {
+      bubble.classList.remove('show');
+      face.textContent = '🐱';
+    }, 2500);
+  });
+})();
+
+// ─── Mood Reactions ────
+(function() {
+  const btns = document.querySelectorAll('.mood__btn');
+  const counterEl = document.getElementById('moodCounter');
+  // Load saved moods from localStorage
+  let moods = JSON.parse(localStorage.getItem('aniradio_moods') || '{}');
+
+  function updateUI() {
+    let total = 0;
+    btns.forEach(btn => {
+      const m = btn.dataset.mood;
+      const c = moods[m] || 0;
+      total += c;
+      if (c > 0) {
+        btn.dataset.count = c;
+        btn.classList.add('has-count');
+      } else {
+        btn.classList.remove('has-count');
+      }
+    });
+    if (total > 0 && counterEl) {
+      counterEl.textContent = `${total} реакци${total === 1 ? 'я' : total < 5 ? 'и' : 'й'} 💜`;
+    }
+  }
+  updateUI();
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const m = btn.dataset.mood;
+      moods[m] = (moods[m] || 0) + 1;
+      localStorage.setItem('aniradio_moods', JSON.stringify(moods));
+      btn.classList.add('active');
+      setTimeout(() => btn.classList.remove('active'), 500);
+      updateUI();
+      // Burst mini emoji from button
+      for (let i = 0; i < 4; i++) {
+        const sp = document.createElement('span');
+        sp.className = 'click-particle';
+        sp.textContent = btn.textContent.trim();
+        const rect = btn.getBoundingClientRect();
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 30 + Math.random() * 30;
+        sp.style.cssText = `left:${rect.left + rect.width/2}px;top:${rect.top}px;--dx:${Math.cos(angle)*dist}px;--dy:${Math.sin(angle)*dist - 20}px;font-size:16px`;
+        document.body.appendChild(sp);
+        setTimeout(() => sp.remove(), 700);
+      }
+    });
+  });
+})();
+
+// ─── Add floating emoji to canvas (alongside stars and petals) ────
+(function() {
+  const canvas = document.getElementById('cosmos');
+  if (!canvas) return;
+  // Add occasional floating kaomoji/emoji via DOM (lighter than canvas text)
+  const kawaii = ['✿', '♪', '♡', '☆', '⊹', '✦', '❀', '🌸'];
+  function spawnFloater() {
+    const el = document.createElement('span');
+    el.className = 'sparkle';
+    el.textContent = kawaii[Math.floor(Math.random() * kawaii.length)];
+    el.style.cssText = `position:fixed;left:${Math.random()*100}vw;top:${80+Math.random()*20}vh;font-size:${12+Math.random()*10}px;animation:sparkle-fade ${2+Math.random()*3}s ease-out forwards;pointer-events:none;z-index:0;opacity:0.3`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 5000);
+  }
+  setInterval(spawnFloater, 3000);
+})();
 </script>
 </body>
 </html>

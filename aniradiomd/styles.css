@@ -1284,3 +1284,423 @@ input[type="range"]::-moz-range-thumb {
 [data-aos] {
   transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1) !important;
 }
+
+/* ══════════════════════════════════════════════════════
+   KAWAII / ANIME EXTRAS
+   ══════════════════════════════════════════════════════ */
+
+/* ─── Mouse Sparkle Trail ─── */
+.sparkle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 14px;
+  animation: sparkle-fade 0.8s ease-out forwards;
+  user-select: none;
+}
+@keyframes sparkle-fade {
+  0% { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); }
+  100% { opacity: 0; transform: scale(0) translateY(-30px) rotate(180deg); }
+}
+
+/* ─── Click Burst ─── */
+.click-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  font-size: 18px;
+  animation: click-burst 0.7s ease-out forwards;
+  user-select: none;
+}
+@keyframes click-burst {
+  0% { opacity: 1; transform: scale(0.5) translate(0, 0); }
+  100% { opacity: 0; transform: scale(1.2) translate(var(--dx), var(--dy)); }
+}
+
+/* ─── Anime Quotes Ticker ─── */
+.ticker {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding: 14px 0;
+  background: var(--bg-glass);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+.ticker__track {
+  display: flex;
+  gap: 60px;
+  white-space: nowrap;
+  animation: ticker-scroll 60s linear infinite;
+  width: max-content;
+}
+.ticker__item {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+}
+.ticker:hover .ticker__track {
+  animation-play-state: paused;
+}
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── Enhanced Pills with Bounce ─── */
+.pill--bounce {
+  transition: var(--transition);
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.pill--bounce:hover {
+  transform: translateY(-3px) scale(1.05);
+  border-color: var(--border-hover);
+  color: var(--brand);
+  background: var(--bg-card);
+  box-shadow: 0 4px 15px var(--brand-glow);
+}
+.pill--bounce::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(255,121,198,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.pill--bounce:hover::after { opacity: 1; }
+
+/* ─── Hero floating kaomoji ─── */
+.hero__kaomoji {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero__kao {
+  position: absolute;
+  font-size: 20px;
+  opacity: 0.25;
+  animation: kao-float 6s ease-in-out infinite;
+  user-select: none;
+}
+.hero__kao--1 { top: 5%; right: 5%; animation-delay: 0s; font-size: 24px; }
+.hero__kao--2 { top: 20%; right: 15%; animation-delay: -1.5s; }
+.hero__kao--3 { bottom: 25%; right: 8%; animation-delay: -3s; }
+.hero__kao--4 { top: 40%; left: 2%; animation-delay: -2s; }
+.hero__kao--5 { bottom: 10%; left: 5%; animation-delay: -4s; }
+@keyframes kao-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.25; }
+  25% { opacity: 0.4; }
+  50% { transform: translateY(-15px) rotate(5deg); opacity: 0.35; }
+  75% { opacity: 0.2; }
+}
+
+/* ─── Wave Divider ─── */
+.wave-divider {
+  position: relative;
+  z-index: 1;
+  margin-top: -2px;
+  line-height: 0;
+}
+.wave-divider svg {
+  width: 100%;
+  height: 40px;
+  display: block;
+}
+
+/* ─── Mood Reactions ─── */
+.mood {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 18px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+}
+.mood__label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.mood__btns {
+  display: flex;
+  gap: 6px;
+}
+.mood__btn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg-glass);
+  font-size: 22px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+.mood__btn:hover {
+  transform: scale(1.25) translateY(-4px);
+  border-color: var(--brand);
+  box-shadow: 0 4px 20px var(--brand-glow);
+}
+.mood__btn:active {
+  transform: scale(0.9);
+}
+.mood__btn.active {
+  border-color: var(--brand);
+  background: rgba(255,121,198,0.15);
+  box-shadow: 0 0 15px var(--brand-glow);
+}
+.mood__btn::after {
+  content: attr(data-count);
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: scale(0);
+  transition: var(--transition);
+}
+.mood__btn.has-count::after {
+  opacity: 1;
+  transform: scale(1);
+}
+.mood__counter {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ─── Enhanced Host Cards ─── */
+.host-card--kawaii {
+  cursor: default;
+}
+.host-card__sparkles {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.4s, transform 0.4s;
+  transform: translateY(5px);
+  letter-spacing: 4px;
+  color: var(--brand-soft);
+}
+.host-card--kawaii:hover .host-card__sparkles {
+  opacity: 0.7;
+  transform: translateY(0);
+}
+.host-card__avatar-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px dashed var(--brand);
+  opacity: 0;
+  animation: spin-slow 12s linear infinite;
+  transition: opacity 0.4s;
+}
+.host-card--kawaii:hover .host-card__avatar-ring {
+  opacity: 0.4;
+}
+.host-card__avatar {
+  position: relative;
+}
+.host-card__kaomoji {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-muted);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: var(--transition);
+  font-family: monospace;
+}
+.host-card--kawaii:hover .host-card__kaomoji {
+  opacity: 0.7;
+  transform: translateY(0);
+}
+
+/* ─── Genre Cards ─── */
+.genres {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 860px) { .genres { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .genres { grid-template-columns: 1fr; } }
+
+.genre-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 24px 18px;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  transition: var(--transition);
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.genre-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,121,198,0.05), rgba(142,197,255,0.05));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.genre-card:hover::before { opacity: 1; }
+.genre-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-card);
+}
+.genre-card__emoji {
+  font-size: 36px;
+  margin-bottom: 10px;
+  transition: transform 0.3s var(--ease);
+}
+.genre-card:hover .genre-card__emoji {
+  transform: scale(1.2) rotate(-5deg);
+  animation: genre-wiggle 0.5s ease;
+}
+@keyframes genre-wiggle {
+  0%, 100% { transform: scale(1.2) rotate(-5deg); }
+  25% { transform: scale(1.3) rotate(5deg); }
+  50% { transform: scale(1.15) rotate(-3deg); }
+  75% { transform: scale(1.25) rotate(3deg); }
+}
+.genre-card__name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 4px;
+}
+.genre-card__desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ─── Neko Mascot ─── */
+.neko {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.3s var(--ease);
+}
+.neko:hover {
+  transform: scale(1.1);
+}
+.neko:active {
+  transform: scale(0.9);
+}
+.neko__body {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-card);
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(16px);
+  animation: neko-bounce 3s ease-in-out infinite;
+}
+.neko__face {
+  font-size: 30px;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+.neko:hover .neko__face {
+  transform: rotate(15deg);
+}
+.neko__bubble {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px 16px 16px 4px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.3s var(--ease);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+.neko__bubble.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+.neko__shadow {
+  width: 40px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.15);
+  margin: 6px auto 0;
+  animation: neko-shadow 3s ease-in-out infinite;
+}
+@keyframes neko-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes neko-shadow {
+  0%, 100% { transform: scaleX(1); opacity: 0.15; }
+  50% { transform: scaleX(0.75); opacity: 0.08; }
+}
+
+/* ─── Section sparkle background effect ─── */
+.section--sparkle::after {
+  content: '✦ ✧ ✦ ✧ ✦';
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 14px;
+  color: var(--brand);
+  opacity: 0.1;
+  letter-spacing: 12px;
+  animation: sparkle-twinkle 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sparkle-twinkle {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.25; }
+}
+
+/* ─── Enhanced Footer ─── */
+.footer__kawaii {
+  font-size: 12px;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+.footer__inner {
+  text-align: center;
+  flex-direction: column;
+}
