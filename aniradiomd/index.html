@@ -1075,34 +1075,39 @@ function clearRequest() {
   const playBtn = window._radioPlayBtn;
   const mainVol = document.getElementById('volumeSlider');
 
-  // ── Background URLs: anime-aesthetic scenery (Unsplash free + reliable) ──
-  const WALLPAPERS = [
-    // Cherry blossoms / sakura
-    'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=1920&q=80',
-    'https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=1920&q=80',
-    'https://images.unsplash.com/photo-1478012237172-55e0d94b17a5?w=1920&q=80',
-    // Japanese scenery
-    'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1920&q=80',
-    'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1920&q=80',
-    'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=1920&q=80',
-    // Dreamy night sky / anime vibe
-    'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=1920&q=80',
-    'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920&q=80',
-    'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=1920&q=80',
-    // Cozy lofi vibes
-    'https://images.unsplash.com/photo-1531907700752-62799b2a3e84?w=1920&q=80',
-    'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1920&q=80',
-    // Pastel / kawaii aesthetic
-    'https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80',
-    'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920&q=80',
-    // Japanese temple / torii
-    'https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=1920&q=80',
-    'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1920&q=80',
+  // ── Background images: anime art via waifu.pics API (free, no key) ──
+  // We'll fetch fresh anime images on open; also keep fallback gradients
+  let WALLPAPERS = [];
+  const FALLBACK_GRADIENTS = [
+    'linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%)',
+    'linear-gradient(135deg, #2d1b4e 0%, #1b1040 50%, #0d0b1a 100%)',
+    'linear-gradient(135deg, #1a1a2e 0%, #2d1452 50%, #0f0c29 100%)',
+    'linear-gradient(135deg, #0c0e1a 0%, #1c2144 50%, #2a1f5e 100%)',
+    'linear-gradient(135deg, #1a0520 0%, #2b1055 50%, #0a1628 100%)',
   ];
-  // Shuffle
-  for (let i = WALLPAPERS.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [WALLPAPERS[i], WALLPAPERS[j]] = [WALLPAPERS[j], WALLPAPERS[i]];
+
+  // Fetch anime images from multiple categories for variety
+  async function fetchAnimeWallpapers() {
+    const categories = ['waifu', 'neko', 'megumin', 'shinobu', 'waifu', 'neko', 'waifu', 'neko', 'waifu', 'neko', 'megumin', 'shinobu', 'waifu', 'neko', 'waifu'];
+    const results = [];
+    // Fetch in parallel (multiple single-image endpoints)
+    const fetches = categories.map(cat =>
+      fetch(`https://api.waifu.pics/sfw/${cat}`)
+        .then(r => r.json())
+        .then(d => d.url)
+        .catch(() => null)
+    );
+    const urls = await Promise.all(fetches);
+    urls.forEach(u => { if (u) results.push(u); });
+    return results;
+  }
+  // Shuffle helper
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
   }
 
   let slideIdx = 0;
@@ -1112,10 +1117,11 @@ function clearRequest() {
   let activeSlide = slide0;
   let nextSlide = slide1;
 
-  // Preload first image
+  // Preload image (verify it actually loads)
   function preloadImg(url) {
     return new Promise((resolve) => {
       const img = new Image();
+      img.crossOrigin = 'anonymous';
       img.onload = () => resolve(url);
       img.onerror = () => resolve(null);
       img.src = url;
@@ -1123,13 +1129,28 @@ function clearRequest() {
   }
 
   function setSlideImage(el, url) {
-    el.style.backgroundImage = `url('${url}')`;
+    // If it's a gradient (starts with "linear-"), use it directly
+    if (url.startsWith('linear-')) {
+      el.style.backgroundImage = url;
+    } else {
+      el.style.backgroundImage = `url('${url}')`;
+    }
   }
 
   async function advanceSlide() {
+    if (!WALLPAPERS.length) return;
     slideIdx = (slideIdx + 1) % WALLPAPERS.length;
-    const url = await preloadImg(WALLPAPERS[slideIdx]);
-    if (!url) { advanceSlide(); return; }
+
+    let url = WALLPAPERS[slideIdx];
+    // If it's an image URL, preload it
+    if (!url.startsWith('linear-')) {
+      const loaded = await preloadImg(url);
+      if (!loaded) {
+        // Replace failed with a fallback gradient
+        WALLPAPERS[slideIdx] = FALLBACK_GRADIENTS[slideIdx % FALLBACK_GRADIENTS.length];
+        url = WALLPAPERS[slideIdx];
+      }
+    }
 
     setSlideImage(nextSlide, url);
     activeSlide.classList.remove('fs-player__slide--active');
@@ -1137,13 +1158,45 @@ function clearRequest() {
 
     // Swap references
     [activeSlide, nextSlide] = [nextSlide, activeSlide];
+
+    // Continuously fetch a fresh image to replace a gradient in the list
+    if (WALLPAPERS.some(w => w.startsWith('linear-'))) {
+      try {
+        const cats = ['waifu', 'neko', 'megumin', 'shinobu'];
+        const cat = cats[Math.floor(Math.random() * cats.length)];
+        const r = await fetch(`https://api.waifu.pics/sfw/${cat}`);
+        const d = await r.json();
+        if (d.url) {
+          const idx = WALLPAPERS.findIndex(w => w.startsWith('linear-'));
+          if (idx !== -1) WALLPAPERS[idx] = d.url;
+        }
+      } catch(e) {}
+    }
   }
 
-  function startSlideshow() {
-    // Load first image immediately
-    setSlideImage(activeSlide, WALLPAPERS[0]);
-    // Preload next
-    preloadImg(WALLPAPERS[1]);
+  async function startSlideshow() {
+    // Fetch anime wallpapers from API
+    if (!WALLPAPERS.length) {
+      const fetched = await fetchAnimeWallpapers();
+      if (fetched.length) {
+        WALLPAPERS = shuffle(fetched);
+      } else {
+        // All fails — use gradient fallbacks
+        WALLPAPERS = [...FALLBACK_GRADIENTS];
+      }
+    }
+
+    // Load first image
+    let firstUrl = WALLPAPERS[0];
+    if (!firstUrl.startsWith('linear-')) {
+      const loaded = await preloadImg(firstUrl);
+      if (!loaded) {
+        WALLPAPERS[0] = FALLBACK_GRADIENTS[0];
+        firstUrl = WALLPAPERS[0];
+      }
+    }
+    setSlideImage(activeSlide, firstUrl);
+
     slideTimer = setInterval(advanceSlide, 12000);
   }
 
@@ -1306,6 +1359,8 @@ function clearRequest() {
     clearTimeout(idleTimer);
     stopSlideshow();
     stopFsSakura();
+    // Reset wallpapers so next open fetches fresh ones
+    WALLPAPERS = [];
 
     fsPlayer.removeEventListener('mousemove', resetIdle);
     fsPlayer.removeEventListener('touchstart', resetIdle);
