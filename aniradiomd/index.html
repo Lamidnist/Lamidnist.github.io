@@ -1071,12 +1071,30 @@ function clearRequest() {
 
   if (!fsPlayer || !fsBtn) return;
 
-  const audio   = window._radioAudio;
-  const playBtn = window._radioPlayBtn;
+  // Lazy access — these are set inside DOMContentLoaded which fires later
+  function getAudio()   { return window._radioAudio; }
+  function getPlayBtn() { return window._radioPlayBtn; }
   const mainVol = document.getElementById('volumeSlider');
 
-  // ── Background images: anime art via waifu.pics API (free, no key) ──
-  // We'll fetch fresh anime images on open; also keep fallback gradients
+  // ── Anime wallpaper direct URLs (надёжные прямые ссылки) ──
+  // waifu.im CDN — прямые ссылки на аниме-арты
+  const STATIC_WALLPAPERS = [
+    'https://cdn.waifu.im/7936.jpg',
+    'https://cdn.waifu.im/8036.jpg',
+    'https://cdn.waifu.im/2255.jpg',
+    'https://cdn.waifu.im/7754.jpg',
+    'https://cdn.waifu.im/7109.jpg',
+    'https://cdn.waifu.im/6134.jpg',
+    'https://cdn.waifu.im/4606.jpg',
+    'https://cdn.waifu.im/3290.jpg',
+    'https://cdn.waifu.im/1942.jpg',
+    'https://cdn.waifu.im/5588.jpg',
+    'https://cdn.waifu.im/3851.jpg',
+    'https://cdn.waifu.im/6690.jpg',
+    'https://cdn.waifu.im/8219.jpg',
+    'https://cdn.waifu.im/2766.jpg',
+    'https://cdn.waifu.im/5149.jpg',
+  ];
   let WALLPAPERS = [];
   const FALLBACK_GRADIENTS = [
     'linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%)',
@@ -1086,20 +1104,25 @@ function clearRequest() {
     'linear-gradient(135deg, #1a0520 0%, #2b1055 50%, #0a1628 100%)',
   ];
 
-  // Fetch anime images from multiple categories for variety
+  // Try to fetch fresh anime images via API, fall back to static list
   async function fetchAnimeWallpapers() {
-    const categories = ['waifu', 'neko', 'megumin', 'shinobu', 'waifu', 'neko', 'waifu', 'neko', 'waifu', 'neko', 'megumin', 'shinobu', 'waifu', 'neko', 'waifu'];
-    const results = [];
-    // Fetch in parallel (multiple single-image endpoints)
-    const fetches = categories.map(cat =>
-      fetch(`https://api.waifu.pics/sfw/${cat}`)
-        .then(r => r.json())
-        .then(d => d.url)
-        .catch(() => null)
-    );
-    const urls = await Promise.all(fetches);
-    urls.forEach(u => { if (u) results.push(u); });
-    return results;
+    try {
+      // waifu.im API — returns multiple images at once
+      const r = await fetch('https://api.waifu.im/search?included_tags=waifu&many=true&is_nsfw=false');
+      const d = await r.json();
+      if (d.images && d.images.length) {
+        return d.images.map(img => img.url);
+      }
+    } catch(e) {}
+    // Fallback: try waifu.pics
+    try {
+      const cats = ['waifu','neko','waifu','neko','waifu','megumin','neko','shinobu','waifu','neko','waifu','neko','waifu','neko','waifu'];
+      const fetches = cats.map(c => fetch(`https://api.waifu.pics/sfw/${c}`).then(r=>r.json()).then(d=>d.url).catch(()=>null));
+      const urls = (await Promise.all(fetches)).filter(Boolean);
+      if (urls.length) return urls;
+    } catch(e) {}
+    // Ultimate fallback: static URLs
+    return [...STATIC_WALLPAPERS];
   }
   // Shuffle helper
   function shuffle(arr) {
@@ -1121,7 +1144,7 @@ function clearRequest() {
   function preloadImg(url) {
     return new Promise((resolve) => {
       const img = new Image();
-      img.crossOrigin = 'anonymous';
+      // No crossOrigin — CSS background-image doesn't need CORS
       img.onload = () => resolve(url);
       img.onerror = () => resolve(null);
       img.src = url;
@@ -1175,15 +1198,12 @@ function clearRequest() {
   }
 
   async function startSlideshow() {
-    // Fetch anime wallpapers from API
+    // Fetch anime wallpapers — try API, else static, else gradients
     if (!WALLPAPERS.length) {
       const fetched = await fetchAnimeWallpapers();
-      if (fetched.length) {
-        WALLPAPERS = shuffle(fetched);
-      } else {
-        // All fails — use gradient fallbacks
-        WALLPAPERS = [...FALLBACK_GRADIENTS];
-      }
+      WALLPAPERS = shuffle(fetched.length ? fetched : [...STATIC_WALLPAPERS]);
+      // If even static list is empty, gradients
+      if (!WALLPAPERS.length) WALLPAPERS = [...FALLBACK_GRADIENTS];
     }
 
     // Load first image
@@ -1296,13 +1316,15 @@ function clearRequest() {
 
   // ── Sync player state ──
   function syncFS(isPlayingOverride) {
-    const isPlaying = typeof isPlayingOverride === 'boolean' ? isPlayingOverride : window._radioPlaying();
+    const a = getAudio();
+    const isPlaying = typeof isPlayingOverride === 'boolean' ? isPlayingOverride
+      : (window._radioPlaying ? window._radioPlaying() : false);
     fsPlayBtn.classList.toggle('playing', isPlaying);
     fsDot.classList.toggle('live', isPlaying);
     fsStatus.textContent = isPlaying ? 'В эфире' : 'Пауза';
     fsVinyl.classList.toggle('spinning', isPlaying);
     fsBars.classList.toggle('active', isPlaying);
-    fsVol.value = audio.volume;
+    if (a) fsVol.value = a.volume;
   }
 
   // Register global sync callback
@@ -1385,14 +1407,16 @@ function clearRequest() {
 
   // ── FS Play/Pause (reuses main audio element) ──
   fsPlayBtn.addEventListener('click', () => {
-    playBtn.click();
+    const pb = getPlayBtn();
+    if (pb) pb.click();
     setTimeout(() => syncFS(), 150);
   });
 
   // ── FS Volume ──
   fsVol.addEventListener('input', () => {
-    audio.volume = parseFloat(fsVol.value);
-    mainVol.value = fsVol.value;
+    const a = getAudio();
+    if (a) a.volume = parseFloat(fsVol.value);
+    if (mainVol) mainVol.value = fsVol.value;
   });
   // Keep in sync if main volume changes
   mainVol.addEventListener('input', () => {
