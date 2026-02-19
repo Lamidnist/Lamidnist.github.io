@@ -22,6 +22,9 @@
 <!-- AOS JS -->
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
 
+<!-- Anime Quotes -->
+<script src="quotes.js" defer></script>
+
 <!-- Styles -->
 <link rel="stylesheet" href="styles.css" />
 </head>
@@ -127,24 +130,8 @@
 
 <!-- ═══════════ ANIME QUOTES TICKER ═══════════ -->
 <div class="ticker" data-aos="fade-up">
-  <div class="ticker__track">
-    <span class="ticker__item">✦ «Я верю, что слёзы, пролитые однажды, обязательно станут силой» — Наруто</span>
-    <span class="ticker__item">🌸 «Даже зимой сакура ждёт своего момента» — Рурони Кенсин</span>
-    <span class="ticker__item">🎵 «Музыка — это мост между сердцами» — Shigatsu wa Kimi no Uso</span>
-    <span class="ticker__item">⭐ «Неважно, как медленно ты идёшь — главное не останавливайся» — One Piece</span>
-    <span class="ticker__item">💜 «Нет ничего невозможного для того, кто верит» — Fairy Tail</span>
-    <span class="ticker__item">🎧 «Мелодия, которая касается души, никогда не будет забыта» — Angel Beats!</span>
-    <span class="ticker__item">🌙 «Даже маленький огонёк может осветить тьму» — Demon Slayer</span>
-    <span class="ticker__item">✨ «Настоящая сила — в доброте» — Fruits Basket</span>
-    <!-- duplicate for seamless loop -->
-    <span class="ticker__item">✦ «Я верю, что слёзы, пролитые однажды, обязательно станут силой» — Наруто</span>
-    <span class="ticker__item">🌸 «Даже зимой сакура ждёт своего момента» — Рурони Кенсин</span>
-    <span class="ticker__item">🎵 «Музыка — это мост между сердцами» — Shigatsu wa Kimi no Uso</span>
-    <span class="ticker__item">⭐ «Неважно, как медленно ты идёшь — главное не останавливайся» — One Piece</span>
-    <span class="ticker__item">💜 «Нет ничего невозможного для того, кто верит» — Fairy Tail</span>
-    <span class="ticker__item">🎧 «Мелодия, которая касается души, никогда не будет забыта» — Angel Beats!</span>
-    <span class="ticker__item">🌙 «Даже маленький огонёк может осветить тьму» — Demon Slayer</span>
-    <span class="ticker__item">✨ «Настоящая сила — в доброте» — Fruits Basket</span>
+  <div class="ticker__track" id="quotesTrack">
+    <!-- Заполняется динамически из quotes.js -->
   </div>
 </div>
 
@@ -583,6 +570,26 @@
 <!-- ═══════════ SCRIPTS ═══════════ -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+
+  // ─── Populate Quotes Ticker from quotes.js ────
+  if (typeof ANIME_QUOTES !== 'undefined') {
+    const track = document.getElementById('quotesTrack');
+    if (track) {
+      // Shuffle quotes each page load for variety
+      const shuffled = [...ANIME_QUOTES].sort(() => Math.random() - 0.5);
+      // Pick ~30 quotes for the ticker (enough for a long scroll)
+      const selected = shuffled.slice(0, 30);
+      const html = selected.map(q =>
+        `<span class="ticker__item">${q.icon} «${q.text}» — ${q.source}</span>`
+      ).join('');
+      // Duplicate for seamless loop
+      track.innerHTML = html + html;
+      // Adjust animation speed based on content length
+      const totalWidth = track.scrollWidth;
+      const speed = Math.max(40, totalWidth / 50); // ~50px per second
+      track.style.animationDuration = speed + 's';
+    }
+  }
 
   // ─── AOS Init ────
   if (typeof AOS !== 'undefined') {
