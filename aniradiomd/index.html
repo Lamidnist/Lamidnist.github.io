@@ -162,6 +162,10 @@
             <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
           </button>
 
+          <button class="player__fullscreen" id="fullscreenBtn" aria-label="На весь экран" title="Открыть на весь экран ✨">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+          </button>
+
           <div class="player__volume">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
             <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.7" />
@@ -551,6 +555,89 @@
   <div class="neko__shadow"></div>
 </div>
 
+<!-- ═══════════ FULLSCREEN PLAYER OVERLAY ═══════════ -->
+<div class="fs-player" id="fsPlayer" aria-hidden="true">
+  <!-- Background slideshow -->
+  <div class="fs-player__bg" id="fsBg">
+    <div class="fs-player__slide fs-player__slide--active" id="fsSlide0"></div>
+    <div class="fs-player__slide" id="fsSlide1"></div>
+  </div>
+  <!-- Dark overlay for readability -->
+  <div class="fs-player__overlay"></div>
+  <!-- Ambient gradient orbs -->
+  <div class="fs-player__orb fs-player__orb--1"></div>
+  <div class="fs-player__orb fs-player__orb--2"></div>
+  <!-- Sakura canvas -->
+  <canvas class="fs-player__canvas" id="fsCanvas"></canvas>
+
+  <!-- Close button -->
+  <button class="fs-player__close" id="fsClose" aria-label="Закрыть">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+
+  <!-- Main content -->
+  <div class="fs-player__content">
+    <!-- Clock -->
+    <div class="fs-player__clock">
+      <div class="fs-player__time" id="fsClock">00:00</div>
+      <div class="fs-player__date" id="fsDate"></div>
+    </div>
+
+    <!-- Center: vinyl + info -->
+    <div class="fs-player__center">
+      <div class="fs-player__vinyl">
+        <div class="fs-player__vinyl-inner" id="fsVinyl">
+          <div class="fs-player__vinyl-label">♪</div>
+          <div class="fs-player__vinyl-ring"></div>
+          <div class="fs-player__vinyl-ring fs-player__vinyl-ring--2"></div>
+        </div>
+      </div>
+      <div class="fs-player__info">
+        <div class="fs-player__status">
+          <span class="fs-player__dot" id="fsDot"></span>
+          <span id="fsStatus">Аниме Радио</span>
+        </div>
+        <div class="fs-player__title">Аниме Радио Молдова</div>
+        <div class="fs-player__subtitle">нежность в каждой ноте ✿</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="fs-player__controls">
+      <button class="fs-player__play" id="fsPlayBtn" aria-label="Play/Pause">
+        <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </button>
+      <div class="fs-player__vol">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <input type="range" id="fsVolume" min="0" max="1" step="0.01" value="0.7" class="fs-player__range" />
+      </div>
+    </div>
+
+    <!-- Big visualizer -->
+    <div class="fs-player__bars" id="fsBars">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <!-- Quote -->
+    <div class="fs-player__quote" id="fsQuote">
+      <div class="fs-player__quote-text" id="fsQuoteText"></div>
+      <div class="fs-player__quote-source" id="fsQuoteSource"></div>
+    </div>
+  </div>
+
+  <!-- Bottom info bar -->
+  <div class="fs-player__bottom">
+    <span class="fs-player__brand">✿ Аниме Радио Молдова</span>
+    <span class="fs-player__hint">ESC — закрыть • идеально для фона на телек 📺</span>
+  </div>
+</div>
+
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer class="footer">
   <div class="footer__inner">
@@ -675,6 +762,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   audio.volume = parseFloat(vol.value);
 
+  // Expose for fullscreen player
+  window._radioAudio = audio;
+  window._radioPlayBtn = playBtn;
+  window._radioPlaying = () => playing;
+  window._radioSetPlayerUI = null; // set after definition
+
   function setPlayerUI(isPlaying) {
     playBtn.classList.toggle('playing', isPlaying);
     statusDot.classList.toggle('live', isPlaying);
@@ -682,7 +775,10 @@ document.addEventListener('DOMContentLoaded', () => {
     vinyl.classList.toggle('spinning', isPlaying);
     visualizer.classList.toggle('active', isPlaying);
     playing = isPlaying;
+    // Notify fullscreen player
+    if (window._fsSync) window._fsSync(isPlaying);
   }
+  window._radioSetPlayerUI = setPlayerUI;
 
   playBtn.addEventListener('click', () => {
     if (!playing) {
@@ -954,6 +1050,300 @@ function clearRequest() {
     setTimeout(() => el.remove(), 5000);
   }
   setInterval(spawnFloater, 3000);
+})();
+
+// ═══════════ FULLSCREEN PLAYER — TV Mode ═══════════
+(function() {
+  const fsPlayer = document.getElementById('fsPlayer');
+  const fsClose  = document.getElementById('fsClose');
+  const fsBtn    = document.getElementById('fullscreenBtn');
+  const fsClock  = document.getElementById('fsClock');
+  const fsDate   = document.getElementById('fsDate');
+  const fsPlayBtn = document.getElementById('fsPlayBtn');
+  const fsVol    = document.getElementById('fsVolume');
+  const fsVinyl  = document.getElementById('fsVinyl');
+  const fsBars   = document.getElementById('fsBars');
+  const fsDot    = document.getElementById('fsDot');
+  const fsStatus = document.getElementById('fsStatus');
+  const fsQuoteText   = document.getElementById('fsQuoteText');
+  const fsQuoteSource = document.getElementById('fsQuoteSource');
+  const fsCanvas = document.getElementById('fsCanvas');
+
+  if (!fsPlayer || !fsBtn) return;
+
+  const audio   = window._radioAudio;
+  const playBtn = window._radioPlayBtn;
+  const mainVol = document.getElementById('volumeSlider');
+
+  // ── Background URLs: anime-aesthetic scenery (Unsplash free + reliable) ──
+  const WALLPAPERS = [
+    // Cherry blossoms / sakura
+    'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=1920&q=80',
+    'https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=1920&q=80',
+    'https://images.unsplash.com/photo-1478012237172-55e0d94b17a5?w=1920&q=80',
+    // Japanese scenery
+    'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1920&q=80',
+    'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1920&q=80',
+    'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=1920&q=80',
+    // Dreamy night sky / anime vibe
+    'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=1920&q=80',
+    'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920&q=80',
+    'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=1920&q=80',
+    // Cozy lofi vibes
+    'https://images.unsplash.com/photo-1531907700752-62799b2a3e84?w=1920&q=80',
+    'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1920&q=80',
+    // Pastel / kawaii aesthetic
+    'https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80',
+    'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920&q=80',
+    // Japanese temple / torii
+    'https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=1920&q=80',
+    'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1920&q=80',
+  ];
+  // Shuffle
+  for (let i = WALLPAPERS.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [WALLPAPERS[i], WALLPAPERS[j]] = [WALLPAPERS[j], WALLPAPERS[i]];
+  }
+
+  let slideIdx = 0;
+  let slideTimer = null;
+  const slide0 = document.getElementById('fsSlide0');
+  const slide1 = document.getElementById('fsSlide1');
+  let activeSlide = slide0;
+  let nextSlide = slide1;
+
+  // Preload first image
+  function preloadImg(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(url);
+      img.onerror = () => resolve(null);
+      img.src = url;
+    });
+  }
+
+  function setSlideImage(el, url) {
+    el.style.backgroundImage = `url('${url}')`;
+  }
+
+  async function advanceSlide() {
+    slideIdx = (slideIdx + 1) % WALLPAPERS.length;
+    const url = await preloadImg(WALLPAPERS[slideIdx]);
+    if (!url) { advanceSlide(); return; }
+
+    setSlideImage(nextSlide, url);
+    activeSlide.classList.remove('fs-player__slide--active');
+    nextSlide.classList.add('fs-player__slide--active');
+
+    // Swap references
+    [activeSlide, nextSlide] = [nextSlide, activeSlide];
+  }
+
+  function startSlideshow() {
+    // Load first image immediately
+    setSlideImage(activeSlide, WALLPAPERS[0]);
+    // Preload next
+    preloadImg(WALLPAPERS[1]);
+    slideTimer = setInterval(advanceSlide, 12000);
+  }
+
+  function stopSlideshow() {
+    clearInterval(slideTimer);
+    slideTimer = null;
+  }
+
+  // ── Clock ──
+  let clockTimer = null;
+  const MONTHS_RU = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const DAYS_RU = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    fsClock.textContent = h + ':' + m;
+    fsDate.textContent = DAYS_RU[now.getDay()] + ', ' + now.getDate() + ' ' + MONTHS_RU[now.getMonth()];
+  }
+
+  // ── Quotes rotation ──
+  let quoteTimer = null;
+  let quoteList = [];
+
+  function nextQuote() {
+    if (!quoteList.length) return;
+    const q = quoteList[Math.floor(Math.random() * quoteList.length)];
+    fsQuoteText.textContent = q.icon + ' «' + q.text + '»';
+    fsQuoteSource.textContent = '— ' + q.source;
+    // Reset animation
+    const quoteEl = document.getElementById('fsQuote');
+    quoteEl.style.animation = 'none';
+    quoteEl.offsetHeight;
+    quoteEl.style.animation = '';
+  }
+
+  // ── Sakura canvas ──
+  let fsAnimFrame = null;
+  function startFsSakura() {
+    const ctx = fsCanvas.getContext('2d');
+    let W = fsCanvas.width = window.innerWidth;
+    let H = fsCanvas.height = window.innerHeight;
+
+    const petals = [];
+    const COUNT = Math.min(60, Math.floor(W / 30));
+    function rand(a, b) { return a + Math.random() * (b - a); }
+    function makePetal() {
+      return {
+        x: rand(-40, W + 40), y: rand(-H * 0.1, -20),
+        s: rand(8, 18), vy: rand(0.3, 1.0), vx: rand(-0.3, 0.3),
+        rot: rand(0, Math.PI * 2), vr: rand(-0.015, 0.015),
+        swayA: rand(10, 25), swayW: rand(0.002, 0.005),
+        opacity: rand(0.2, 0.55)
+      };
+    }
+    for (let i = 0; i < COUNT; i++) petals.push(makePetal());
+
+    let t = 0;
+    function draw() {
+      t++;
+      ctx.clearRect(0, 0, W, H);
+      petals.forEach(p => {
+        p.y += p.vy;
+        p.x += p.vx + Math.sin(t * p.swayW) * 0.5;
+        p.rot += p.vr;
+        if (p.y > H + 30) Object.assign(p, makePetal());
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = '#ffb0d8';
+        ctx.beginPath();
+        const s = p.s;
+        ctx.moveTo(0, -s * 0.2);
+        ctx.bezierCurveTo(s * 0.7, -s * 0.7, s * 0.7, s * 0.5, 0, s * 0.9);
+        ctx.bezierCurveTo(-s * 0.7, s * 0.5, -s * 0.7, -s * 0.7, 0, -s * 0.2);
+        ctx.fill();
+        ctx.restore();
+      });
+      fsAnimFrame = requestAnimationFrame(draw);
+    }
+    draw();
+
+    // Resize handler
+    window.__fsResize = () => {
+      W = fsCanvas.width = window.innerWidth;
+      H = fsCanvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', window.__fsResize);
+  }
+
+  function stopFsSakura() {
+    cancelAnimationFrame(fsAnimFrame);
+    if (window.__fsResize) window.removeEventListener('resize', window.__fsResize);
+  }
+
+  // ── Sync player state ──
+  function syncFS(isPlayingOverride) {
+    const isPlaying = typeof isPlayingOverride === 'boolean' ? isPlayingOverride : window._radioPlaying();
+    fsPlayBtn.classList.toggle('playing', isPlaying);
+    fsDot.classList.toggle('live', isPlaying);
+    fsStatus.textContent = isPlaying ? 'В эфире' : 'Пауза';
+    fsVinyl.classList.toggle('spinning', isPlaying);
+    fsBars.classList.toggle('active', isPlaying);
+    fsVol.value = audio.volume;
+  }
+
+  // Register global sync callback
+  window._fsSync = function(isPlaying) {
+    if (fsPlayer.classList.contains('active')) syncFS(isPlaying);
+  };
+
+  // ── Idle auto-hide UI ──
+  let idleTimer = null;
+  function resetIdle() {
+    fsPlayer.classList.remove('idle');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      fsPlayer.classList.add('idle');
+    }, 4000);
+  }
+
+  // ── Open / Close ──
+  function openFS() {
+    // Prepare quotes
+    if (typeof ANIME_QUOTES !== 'undefined') quoteList = ANIME_QUOTES;
+    nextQuote();
+
+    fsPlayer.classList.add('active');
+    fsPlayer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    syncFS();
+    updateClock();
+    clockTimer = setInterval(updateClock, 10000);
+    quoteTimer = setInterval(nextQuote, 12000);
+    startSlideshow();
+    startFsSakura();
+    resetIdle();
+
+    fsPlayer.addEventListener('mousemove', resetIdle);
+    fsPlayer.addEventListener('touchstart', resetIdle);
+
+    // Try real fullscreen API
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen();
+    }
+  }
+
+  function closeFS() {
+    fsPlayer.classList.remove('active');
+    fsPlayer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+
+    clearInterval(clockTimer);
+    clearInterval(quoteTimer);
+    clearTimeout(idleTimer);
+    stopSlideshow();
+    stopFsSakura();
+
+    fsPlayer.removeEventListener('mousemove', resetIdle);
+    fsPlayer.removeEventListener('touchstart', resetIdle);
+
+    // Exit real fullscreen
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else if (document.webkitFullscreenElement) {
+      document.webkitExitFullscreen();
+    }
+  }
+
+  // ── Events ──
+  fsBtn.addEventListener('click', openFS);
+  fsClose.addEventListener('click', closeFS);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && fsPlayer.classList.contains('active')) {
+      closeFS();
+      e.preventDefault();
+    }
+  });
+
+  // ── FS Play/Pause (reuses main audio element) ──
+  fsPlayBtn.addEventListener('click', () => {
+    playBtn.click();
+    setTimeout(() => syncFS(), 150);
+  });
+
+  // ── FS Volume ──
+  fsVol.addEventListener('input', () => {
+    audio.volume = parseFloat(fsVol.value);
+    mainVol.value = fsVol.value;
+  });
+  // Keep in sync if main volume changes
+  mainVol.addEventListener('input', () => {
+    fsVol.value = mainVol.value;
+  });
+
 })();
 </script>
 </body>
